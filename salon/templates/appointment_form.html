@@ -1,0 +1,77 @@
+<!-- Formulaire pour ajouter un rendez-vous -->
+<div class="modal fade" id="addAppointmentModal" tabindex="-1" aria-labelledby="addAppointmentModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addAppointmentModalLabel">Ajouter un rendez-vous</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="addAppointmentForm">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="client" class="form-label">Client</label>
+                        <select class="form-select" name="client" id="client" required>
+                            {% for client in clients %}
+                                <option value="{{ client.id }}">{{ client.nom }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="service" class="form-label">Service</label>
+                        <select class="form-select" name="service" id="service" required>
+                            {% for service in services %}
+                                <option value="{{ service.id }}">{{ service.nom }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="date" class="form-label">Date</label>
+                        <input type="date" class="form-control" name="date" id="date" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="heure" class="form-label">Heure</label>
+                        <input type="time" class="form-control" name="heure" id="heure" required>
+                    </div>
+                    <button type="submit" class="btn btn-success">Ajouter</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal de modification de rendez-vous -->
+<div class="modal fade" id="editAppointmentModal" tabindex="-1" aria-labelledby="editAppointmentModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editAppointmentModalLabel">Modifier le rendez-vous</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editAppointmentForm">
+                    {% csrf_token %}
+                    <input type="hidden" id="edit-appointment-id" name="id">
+                    <div class="mb-3">
+                        <label for="edit-client" class="form-label">Client</label>
+                        <input type="text" class="form-control" id="edit-client" name="client" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="edit-service" class="form-label">Service</label>
+                        <input type="text" class="form-control" id="edit-service" name="service" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="edit-date" class="form-label">Date</label>
+                        <input type="date" class="form-control" id="edit-date" name="date" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="edit-heure" class="form-label">Heure</label>
+                        <input type="time" class="form-control" id="edit-heure" name="heure" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Enregistrer</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

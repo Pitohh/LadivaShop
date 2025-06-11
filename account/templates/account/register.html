@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% load widget_tweaks %}
+{% block title %}Inscription{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-4">
+            <div class="card shadow">
+                <div class="card-body">
+                    <h2 class="card-title text-center mb-4">Inscription</h2>
+                    {% if messages %}
+                        <div id="messages">
+                            {% for message in messages %}
+                                <div class="alert {% if message.tags == 'error' %}alert-danger{% elif message.tags == 'success' %}alert-success{% else %}alert-{{ message.tags }}{% endif %} alert-dismissible fade show" role="alert">
+                                    {{ message }}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            {{ form.email|add_class:"form-control" }}
+                            {% if form.email.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {{ form.email.errors }}
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Mot de passe</label>
+                            {{ form.password|add_class:"form-control" }}
+                            {% if form.password.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {{ form.password.errors }}
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="mb-3">
+                            <label for="password2" class="form-label">Confirmer le mot de passe</label>
+                            {{ form.password2|add_class:"form-control" }}
+                            {% if form.password2.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {{ form.password2.errors }}
+                                </div>
+                            {% endif %}
+                        </div>
+                        <button type="submit" class="btn btn-primary">S'inscrire</button>
+                        <a href="{% url 'account:login'%}" class="btn btn-danger">Se connecter</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+    <script>
+        // Disparaître les messages après 3 secondes
+        setTimeout(function() {
+            var messages = document.getElementById('messages');
+            if (messages) {
+                var alerts = messages.getElementsByClassName('alert');
+                for (var i = 0; i < alerts.length; i++) {
+                    alerts[i].classList.remove('show');
+                }
+            }
+        }, 3000);
+    </script>
+{% endblock %}

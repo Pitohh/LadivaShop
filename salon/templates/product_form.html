@@ -1,0 +1,149 @@
+<!-- Modal d'ajout de produit -->
+<!-- Modal d'ajout de produit -->
+<div class="modal fade" id="addProductModal" tabindex="-1" aria-labelledby="addProductModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addProductModalLabel">➕ Ajouter un produit</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="addProductForm" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="nom" class="form-label">Nom du produit</label>
+                        <input type="text" class="form-control" name="nom" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="description" class="form-label">Description</label>
+                        <textarea class="form-control" name="description"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="prix" class="form-label">Prix (€)</label>
+                        <input type="number" class="form-control" name="prix" step="0.01" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="quantite" class="form-label">Quantité</label>
+                        <input type="number" class="form-control" name="quantite" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="limite_stock" class="form-label">Limite de stock</label>
+                        <input type="number" class="form-control" name="limite_stock" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="image" class="form-label">Image</label>
+                        <input type="file" class="form-control" name="image">
+                    </div>
+                    <button type="submit" class="btn btn-success">✅ Ajouter</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal de modification de produit -->
+<!-- Modal de modification de produit -->
+<div class="modal fade" id="editProductModal" tabindex="-1" aria-labelledby="editProductModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editProductModalLabel">✏ Modifier le produit</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editProductForm" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <input type="hidden" name="product_id">
+                    <div class="mb-3">
+                        <label for="nom" class="form-label">Nom du produit</label>
+                        <input type="text" class="form-control" name="nom" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="description" class="form-label">Description</label>
+                        <textarea class="form-control" name="description"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="prix" class="form-label">Prix (€)</label>
+                        <input type="number" class="form-control" name="prix" step="0.01" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="quantite" class="form-label">Quantité</label>
+                        <input type="number" class="form-control" name="quantite" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="limite_stock" class="form-label">Limite de stock</label>
+                        <input type="number" class="form-control" name="limite_stock" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="image" class="form-label">Image</label>
+                        <input type="file" class="form-control" name="image">
+                    </div>
+                    <button type="submit" class="btn btn-warning">💾 Enregistrer</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        console.log("Modals chargés ✅");
+    
+        const apiUrl = '/api/products/';
+    
+        // Ajout d'un produit
+        document.getElementById('addProductForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const formData = new FormData(this);
+    
+            fetch(apiUrl, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                body: formData
+            })
+            .then(response => response.json())
+            .then(product => {
+                alert("✔ Produit ajouté !");
+                document.getElementById('addProductForm').reset();
+                document.querySelector('#addProductModal .btn-close').click();
+                location.reload();
+            })
+            .catch(error => {
+                console.error("❌ Erreur :", error);
+                alert("Erreur lors de l'ajout.");
+            });
+        });
+    
+        // Modification d'un produit
+        document.getElementById('editProductForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const formData = new FormData(this);
+            const productId = formData.get('product_id');
+            formData.delete('product_id');
+    
+            fetch(`${apiUrl}${productId}/`, {
+                method: 'PUT',
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                body: formData
+            })
+            .then(response => response.json())
+            .then(product => {
+                alert("✔ Produit mis à jour !");
+                document.getElementById('editProductForm').reset();
+                document.querySelector('#editProductModal .btn-close').click();
+                location.reload();
+            })
+            .catch(error => {
+                console.error("❌ Erreur :", error);
+                alert("Erreur lors de la mise à jour.");
+            });
+        });
+    });
+    </script>
+    

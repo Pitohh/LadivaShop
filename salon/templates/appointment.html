@@ -1,0 +1,139 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="row row-cols-auto d-flex justify-content-between m-0">
+    <h2 class="fw-bold">Appointments</h2>
+    <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#addAppointmentModal">
+        Add Appointment
+    </button>
+</div>
+
+<!-- Include modal forms -->
+{% include "appointment_form.html" %}
+
+<div class="row mt-4">
+    {% if appointments_by_date %}
+        <table class="table table-bordered">
+            <thead class="table-dark">
+                <tr>
+                    <th>Date</th>
+                    <th>Client</th>
+                    <th>Service</th>
+                    <th>Time</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for date, appointments_list in appointments_by_date.items %}
+                    <tr>
+                        <td rowspan="{{ appointments_list|length }}" class="align-middle text-center">
+                            {{ date }}
+                        </td>
+                        {% for appointment in appointments_list %}
+                            {% if not forloop.first %}<tr>{% endif %}
+                                <td>{{ appointment.client.nom }}</td>
+                                <td>{{ appointment.service.nom }}</td>
+                                <td>{{ appointment.heure }}</td>
+                                <td>
+                                    <select class="form-select status-select" data-id="{{ appointment.id }}">
+                                        <option value="pending" {% if appointment.statut == "pending" %}selected{% endif %}>Pending</option>
+                                        <option value="confirmed" {% if appointment.statut == "confirmed" %}selected{% endif %}>Confirmed</option>
+                                        <option value="cancelled" {% if appointment.statut == "cancelled" %}selected{% endif %}>Cancelled</option>
+                                    </select>
+                                </td>                                    
+                                <td>
+                                    <button class="btn btn-sm btn-warning edit-btn" data-id="{{ appointment.id }}" data-bs-toggle="modal" data-bs-target="#editAppointmentModal">
+                                        ✏ Modifier
+                                    </button>
+                                    <button class="btn btn-sm btn-danger delete-btn" data-id="{{ appointment.id }}">
+                                        🗑 Supprimer
+                                    </button>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p class="text-center">No appointments found.</p>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        console.log("Script chargé ✅");
+
+        // Vérification si Bootstrap est bien chargé
+        if (typeof bootstrap === 'undefined') {
+            console.error("⚠ Bootstrap JS n'est pas chargé !");
+            return;
+        }
+
+        // Ajouter un rendez-vous
+        document.getElementById("addAppointmentForm").addEventListener("submit", function (e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            const data = Object.fromEntries(formData.entries());
+
+            fetch("/api/appointments/", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": "{{ csrf_token }}"
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert("Rendez-vous ajouté !");
+                location.reload();
+            })
+            .catch(error => console.error("Erreur lors de l'ajout :", error));
+        });
+
+        // Ouvrir le modal de modification avec les données du rendez-vous
+        document.querySelectorAll(".edit-btn").forEach(button => {
+            button.addEventListener("click", function () {
+                const appointmentId = this.dataset.id;
+                fetch(`/api/appointments/${appointmentId}/`)
+                    .then(response => response.json())
+                    .then(data => {
+                        document.getElementById("edit-appointment-id").value = appointmentId;
+                        document.getElementById("edit-client").value = data.client;
+                        document.getElementById("edit-service").value = data.service;
+                        document.getElementById("edit-date").value = data.date;
+                        document.getElementById("edit-heure").value = data.heure;
+                    })
+                    .catch(error => console.error("Erreur lors de la récupération des données :", error));
+            });
+        });
+
+        // Modifier un rendez-vous
+        document.getElementById("editAppointmentForm").addEventListener("submit", function (e) {
+            e.preventDefault();
+            const appointmentId = document.getElementById("edit-appointment-id").value;
+            const formData = new FormData(this);
+            const data = Object.fromEntries(formData.entries());
+
+            fetch(`/api/appointments/${appointmentId}/`, {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": "{{ csrf_token }}"
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert("Rendez-vous modifié !");
+                location.reload();
+            })
+            .catch(error => console.error("Erreur lors de la modification :", error));
+        });
+    });
+</script>
+{% endblock %}

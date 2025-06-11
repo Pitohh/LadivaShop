@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+{% block title %}Connexion{% endblock %}
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-4">
+            <div class="card shadow">
+                <div class="card-body">
+                    <h2 class="card-title text-center mb-4">Connexion</h2>
+                    
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            {{ form.email|add_class:"form-control" }}
+                            {% if form.email.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {% for error in form.email.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Mot de passe</label>
+                            {{ form.password|add_class:"form-control" }}
+                            {% if form.password.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {% for error in form.password.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        {% if form.non_field_errors %}
+                            <div class="alert alert-danger">
+                                {% for error in form.non_field_errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary">Se connecter</button>
+                        </div>
+                    </form>
+
+                    {% comment %}<div class="text-center mt-3">
+                        <p class="mb-1">Vous n'avez pas de compte ? <a href="{% url 'account:register' %}" class="text-decoration-none">Inscrivez-vous ici</a></p>
+                        <p class="mb-0"><a href="{% url 'account:password_reset' %}" class="text-decoration-none">Mot de passe oublié ?</a></p>
+                    </div>{% endcomment %}
+
+                </div>
+            </div>
+            {% if messages %}
+                <div id="messages" class="pt-2 mt-2">
+                    {% for message in messages %}
+                        <div class="alert {% if message.tags == 'error' %}alert-danger{% elif message.tags == 'success' %}alert-success{% else %}alert-{{ message.tags }}{% endif %} alert-dismissible fade show" role="alert">
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+    <script>
+        // Disparaître les messages après 3 secondes
+        setTimeout(function() {
+            var messages = document.getElementById('messages');
+            if (messages) {
+                var alerts = messages.getElementsByClassName('alert');
+                for (var i = 0; i < alerts.length; i++) {
+                    alerts[i].classList.remove('show');
+                }
+            }
+        }, 3000);
+    </script>
+{% endblock %}

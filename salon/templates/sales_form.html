@@ -1,0 +1,33 @@
+<!-- Modal d'ajout de vente -->
+<div class="modal fade" id="addSaleModal" tabindex="-1" aria-labelledby="addSaleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addSaleModalLabel">➕ Ajouter une vente</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="addSaleForm">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="client" class="form-label">Client</label>
+                        <select class="form-select" name="client" required>
+                            {% for client in clients %}
+                                <option value="{{ client.id }}">{{ client.nom }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="moyen_paiement" class="form-label">Moyen de paiement</label>
+                        <select class="form-select" name="moyen_paiement" required>
+                            <option value="cash">💵 Espèces</option>
+                            <option value="card">💳 Carte bancaire</option>
+                            <option value="mobile">📱 Mobile</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-success">✅ Ajouter</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

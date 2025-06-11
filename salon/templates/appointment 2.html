@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Appointments{% endblock %}
+
+{% block content %}
+    <h1>Appointments</h1>
+    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addAppointmentModal">Add Appointment</button>
+    <div id="appointmentsList">
+        {% for appointment in appointments %}
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">{{ appointment.client.nom }}</h5>
+                    <p class="card-text">{{ appointment.service.nom }}</p>
+                    <p class="card-text">{{ appointment.date }} | {{ appointment.heure }}</p>
+                    <p class="card-text">{{ appointment.statut }}</p>
+                </div>
+            </div>
+        {% empty %}
+            <p>No appointments found.</p>
+        {% endfor %}
+    </div>
+{% endblock %}

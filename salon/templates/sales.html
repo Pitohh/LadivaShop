@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4">Liste des Ventes</h2>
+
+    <table class="table table-bordered">
+        <thead class="text-center align-items-center">
+            <tr>
+                <th rowspan="2">ID</th>
+                <th rowspan="2">Client</th>
+                <th rowspan="2">Date</th>
+                <th colspan="4">Produits</th>
+                <th colspan="2">Services</th>
+                <th rowspan="2">Moyen de paiement</th>
+                <th rowspan="2">Total (€)</th>
+                <th rowspan="2">Actions</th>
+            </tr>
+            <tr>
+                <th>Produit</th>
+                <th>Quantité</th>
+                <th>Prix unitaire</th>
+                <th>Total</th>
+                <th>Service</th>
+                <th>Prix</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for sale in sales %}
+            <tr>
+                <td>{{ sale.id }}</td>
+                <td>{{ sale.client.nom }}</td>
+                <td>{{ sale.date }}</td>
+
+                <!-- Produits vendus -->
+                <td>
+                    {% for sale_product in sale.sale_products.all %}
+                    {{ sale_product.product.nom }}<br>
+                    {% endfor %}
+                </td>
+                <td>
+                    {% for sale_product in sale.sale_products.all %}
+                    {{ sale_product.quantite }}<br>
+                    {% endfor %}
+                </td>
+                <td>
+                    {% for sale_product in sale.sale_products.all %}
+                    {{ sale_product.product.prix }} €<br>
+                    {% endfor %}
+                </td>
+                <td>
+                    {% for sale_product in sale.sale_products.all %}
+                    {{ sale_product.total_price }} €<br>
+                    {% endfor %}
+                </td>
+
+                <!-- Services vendus -->
+                <td>
+                    {% for sale_service in sale.sale_services.all %}
+                    {{ sale_service.service.nom }}<br>
+                    {% endfor %}
+                </td>
+                <td>
+                    {% for sale_service in sale.sale_services.all %}
+                    {{ sale_service.service.prix }} €<br>
+                    {% endfor %}
+                </td>
+
+                <!-- Moyen de paiement -->
+                <td>{{ sale.moyen_paiement }}</td>
+
+                <!-- Total calculé -->
+                <td>{{ sale.total_sale }} €</td>
+
+                <!-- Actions -->
+                <td>
+                    <button class="btn btn-danger delete-sale-btn" data-id="{{ sale.id }}">
+                        Supprimer
+                    </button>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    // Suppression d'une vente
+    document.querySelectorAll(".delete-sale-btn").forEach(button => {
+        button.addEventListener("click", function() {
+            const saleId = this.dataset.id;
+            if (confirm("Voulez-vous vraiment supprimer cette vente ?")) {
+                fetch(`/api/sales/${saleId}/`, {
+                    method: "DELETE",
+                    headers: { "X-CSRFToken": "{{ csrf_token }}" }
+                }).then(response => {
+                    if (response.ok) {
+                        alert("Vente supprimée avec succès !");
+                        location.reload();
+                    } else {
+                        alert("Erreur lors de la suppression.");
+                    }
+                });
+            }
+        });
+    });
+});
+</script>
+{% endblock %}

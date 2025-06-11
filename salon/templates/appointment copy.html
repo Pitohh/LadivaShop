@@ -1,0 +1,2138 @@
+<!DOCTYPE html>
+
+<html lang="fr-fr" dir="ltr">
+
+<head>
+	<title>Sélectionnez l’objet appointment à changer | Site d’administration de Django</title>
+	<link rel="stylesheet" href="/static/admin/css/base.css">
+
+	<link rel="stylesheet" href="/static/admin/css/dark_mode.css">
+	<script src="/static/admin/js/theme.js"></script>
+
+
+	<link rel="stylesheet" href="/static/admin/css/nav_sidebar.css">
+	<script src="/static/admin/js/nav_sidebar.js" defer></script>
+
+
+
+	<link rel="stylesheet" href="/static/admin/css/changelists.css">
+
+
+	<script src="/admin/jsi18n/"></script>
+	<script src="/static/admin/js/vendor/jquery/jquery.js"></script>
+	<script src="/static/admin/js/jquery.init.js"></script>
+	<script src="/static/admin/js/core.js"></script>
+	<script src="/static/admin/js/admin/RelatedObjectLookups.js"></script>
+	<script src="/static/admin/js/actions.js"></script>
+	<script src="/static/admin/js/urlify.js"></script>
+	<script src="/static/admin/js/prepopulate.js"></script>
+	<script src="/static/admin/js/vendor/xregexp/xregexp.js"></script>
+	<script src="/static/admin/js/filters.js" defer></script>
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="/static/admin/css/responsive.css">
+
+
+	<meta name="robots" content="NONE,NOARCHIVE">
+</head>
+
+<body class=" app-salon model-appointment change-list" data-admin-utc-offset="3600">
+	<a href="#content-start" class="skip-to-content-link">Passer au contenu principal</a>
+	<!-- Container -->
+	<div id="container">
+
+
+		<!-- Header -->
+
+		<header id="header">
+			<div id="branding">
+
+				<div id="site-name" class="d-flex align-items-center">
+					<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32	" fill="currentColor" class="bi bi-stars" viewBox="0 0 16 16">
+						<path d="M7.657 6.247c.11-.33.576-.33.686 0l.645 1.937a2.89 2.89 0 0 0 1.829 1.828l1.936.645c.33.11.33.576 0 .686l-1.937.645a2.89 2.89 0 0 0-1.828 1.829l-.645 1.936a.361.361 0 0 1-.686 0l-.645-1.937a2.89 2.89 0 0 0-1.828-1.828l-1.937-.645a.361.361 0 0 1 0-.686l1.937-.645a2.89 2.89 0 0 0 1.828-1.828zM3.794 1.148a.217.217 0 0 1 .412 0l.387 1.162c.173.518.579.924 1.097 1.097l1.162.387a.217.217 0 0 1 0 .412l-1.162.387A1.73 1.73 0 0 0 4.593 5.69l-.387 1.162a.217.217 0 0 1-.412 0L3.407 5.69A1.73 1.73 0 0 0 2.31 4.593l-1.162-.387a.217.217 0 0 1 0-.412l1.162-.387A1.73 1.73 0 0 0 3.407 2.31zM10.863.099a.145.145 0 0 1 .274 0l.258.774c.115.346.386.617.732.732l.774.258a.145.145 0 0 1 0 .274l-.774.258a1.16 1.16 0 0 0-.732.732l-.258.774a.145.145 0 0 1-.274 0l-.258-.774a1.16 1.16 0 0 0-.732-.732L9.1 2.137a.145.145 0 0 1 0-.274l.774-.258c.346-.115.617-.386.732-.732z"/>
+					</svg>
+					<a href="/admin/">
+						  Beauty Salon
+					</a>
+				</div>
+
+
+			</div>
+
+
+			<div id="user-tools">
+
+				Bienvenue,
+				<strong>kuro</strong>.
+				<a href="/admin/password_change/">Modifier le mot de passe</a> /
+
+				<form id="logout-form" method="post" action="/admin/logout/">
+					<input type="hidden" name="csrfmiddlewaretoken"
+						value="meQWkMTOcZNcK3R4v89upOEq7m0qhcBP5sHFYmbmnEH1RA8uNfAsCoCOIsbArqeN">
+					<button type="submit">Déconnexion</button>
+				</form>
+
+				<button class="theme-toggle">
+					<span class="visually-hidden theme-label-when-auto">Changer de thème (actuellement :
+						automatique)</span>
+					<span class="visually-hidden theme-label-when-light">Changer de thème (actuellement : clair)</span>
+					<span class="visually-hidden theme-label-when-dark">Changer de thème (actuellement : sombre)</span>
+					<svg aria-hidden="true" class="theme-icon-when-auto">
+						<use xlink:href="#icon-auto" />
+					</svg>
+					<svg aria-hidden="true" class="theme-icon-when-dark">
+						<use xlink:href="#icon-moon" />
+					</svg>
+					<svg aria-hidden="true" class="theme-icon-when-light">
+						<use xlink:href="#icon-sun" />
+					</svg>
+				</button>
+
+
+			</div>
+
+
+
+		</header>
+
+		<!-- END Header -->
+
+		<div class="main" id="main">
+
+
+
+			<button class="sticky toggle-nav-sidebar" id="toggle-nav-sidebar"
+				aria-label="Basculer la navigation"></button>
+			<nav class="sticky" id="nav-sidebar" aria-label="Barre latérale">
+
+
+
+				{% if not user.is_superuser %}
+				<div class="app-account module">
+					<table>
+						<caption>
+							<a href="/admin/account/" class="section"
+								title="Modèles de l’application Account">Account</a>
+						</caption>
+
+
+						<tr class="model-user">
+							<th scope="row" id="account-user">
+
+								<a href="/admin/account/user/">Utilisateurs</a>
+
+							</th>
+
+
+							<td><a href="/admin/account/user/add/" class="addlink"
+									aria-describedby="account-user">Ajouter</a></td>
+
+
+
+						</tr>
+
+
+					</table>
+				</div>
+
+				<div class="app-auth module">
+					<table>
+						<caption>
+							<a href="/admin/auth/" class="section"
+								title="Modèles de l’application Authentification et autorisation">Authentification et
+								autorisation</a>
+						</caption>
+
+
+						<tr class="model-group">
+							<th scope="row" id="auth-group">
+
+								<a href="/admin/auth/group/">Groupes</a>
+
+							</th>
+
+
+							<td><a href="/admin/auth/group/add/" class="addlink"
+									aria-describedby="auth-group">Ajouter</a></td>
+
+
+
+						</tr>
+
+
+					</table>
+				</div>
+
+				<div class="app-authtoken module">
+					<table>
+						<caption>
+							<a href="/admin/authtoken/" class="section"
+								title="Modèles de l’application Jeton d&#x27;authentification">Jeton
+								d&#x27;authentification</a>
+						</caption>
+
+
+						<tr class="model-tokenproxy">
+							<th scope="row" id="authtoken-tokenproxy">
+
+								<a href="/admin/authtoken/tokenproxy/">Jetons</a>
+
+							</th>
+
+
+							<td><a href="/admin/authtoken/tokenproxy/add/" class="addlink"
+									aria-describedby="authtoken-tokenproxy">Ajouter</a></td>
+
+
+
+						</tr>
+
+
+					</table>
+				</div>
+				{% endif %}
+
+				<div class="app-salon module current-app">
+					<table>
+						<tr class="model-appointment">
+							<th scope="row" id="salon-appointment" class="d-flex align-self-center">
+								<a href="{% url 'dashboard' %}" aria-current="page">
+									<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-ui-checks-grid" viewBox="0 0 16 16">
+										<path d="M2 10h3a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1m9-9h3a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-3a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1m0 9a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-3a1 1 0 0 0-1-1zm0-10a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h3a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zM2 9a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h3a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2zm7 2a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2h-3a2 2 0 0 1-2-2zM0 2a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm5.354.854a.5.5 0 1 0-.708-.708L3 3.793l-.646-.647a.5.5 0 1 0-.708.708l1 1a.5.5 0 0 0 .708 0z"/>
+									</svg>
+									Dashboard
+								</a>
+							</th>
+							<td>
+								<a href="/admin/salon/appointment/add/" class="addlink" aria-describedby="salon-appointment">Ajouter</a>
+							</td>
+						</tr>
+
+						<tr class="model-appointment current-model">
+							<th scope="row" id="salon-appointment">
+								<a href="/admin/salon/appointment/" aria-current="page">
+									<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar-event" viewBox="0 0 16 16">
+										<path d="M11 6.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5z"/>
+										<path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z"/>
+									</svg>
+									Appointments
+								</a>
+							</th>
+							<td>
+								<a href="/admin/salon/appointment/add/" class="addlink" aria-describedby="salon-appointment">Ajouter</a>
+							</td>
+						</tr>
+
+						<tr class="model-client">
+							<th scope="row" id="salon-client">
+								<a href="{% url 'client_view' %}">
+									<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-people-fill" viewBox="0 0 16 16">
+										<path d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6m-5.784 6A2.24 2.24 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.3 6.3 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1zM4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5"/>
+									</svg>
+									Clients
+								</a>
+							</th>
+							<td>
+								<a href="/admin/salon/client/add/" class="addlink" aria-describedby="salon-client">Ajouter</a>
+							</td>
+						</tr>
+
+						<tr class="model-product">
+							<th scope="row" id="salon-product">
+								<a href="{% url 'product_view' %}">
+									<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-seam" viewBox="0 0 16 16">
+										<path d="M8.186 1.113a.5.5 0 0 0-.372 0L1.846 3.5l2.404.961L10.404 2zm3.564 1.426L5.596 5 8 5.961 14.154 3.5zm3.25 1.7-6.5 2.6v7.922l6.5-2.6V4.24zM7.5 14.762V6.838L1 4.239v7.923zM7.443.184a1.5 1.5 0 0 1 1.114 0l7.129 2.852A.5.5 0 0 1 16 3.5v8.662a1 1 0 0 1-.629.928l-7.185 2.874a.5.5 0 0 1-.372 0L.63 13.09a1 1 0 0 1-.63-.928V3.5a.5.5 0 0 1 .314-.464z"/>
+									</svg>
+									Products
+								</a>
+							</th>
+							<td>
+								<a href="/admin/salon/product/add/" class="addlink" aria-describedby="salon-product">Ajouter</a>
+							</td>
+						</tr>
+
+						<tr class="model-sale">
+							<th scope="row" id="salon-sale">
+
+								<a href="{% url 'sales_view' %}">
+									<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-currency-dollar" viewBox="0 0 16 16">
+										<path d="M4 10.781c.148 1.667 1.513 2.85 3.591 3.003V15h1.043v-1.216c2.27-.179 3.678-1.438 3.678-3.3 0-1.59-.947-2.51-2.956-3.028l-.722-.187V3.467c1.122.11 1.879.714 2.07 1.616h1.47c-.166-1.6-1.54-2.748-3.54-2.875V1H7.591v1.233c-1.939.23-3.27 1.472-3.27 3.156 0 1.454.966 2.483 2.661 2.917l.61.162v4.031c-1.149-.17-1.94-.8-2.131-1.718zm3.391-3.836c-1.043-.263-1.6-.825-1.6-1.616 0-.944.704-1.641 1.8-1.828v3.495l-.2-.05zm1.591 1.872c1.287.323 1.852.859 1.852 1.769 0 1.097-.826 1.828-2.2 1.939V8.73z"/>
+									</svg>
+									Sales
+								</a>
+							</th>
+							<td>
+								<a href="/admin/salon/sale/add/" class="addlink" aria-describedby="salon-sale">Ajouter</a>
+							</td>
+						</tr>
+
+						<tr class="model-service">
+							<th scope="row" id="salon-service">
+
+								<a href="{% url 'services_view' %}">
+									<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-scissors" viewBox="0 0 16 16">
+										<path d="M3.5 3.5c-.614-.884-.074-1.962.858-2.5L8 7.226 11.642 1c.932.538 1.472 1.616.858 2.5L8.81 8.61l1.556 2.661a2.5 2.5 0 1 1-.794.637L8 9.73l-1.572 2.177a2.5 2.5 0 1 1-.794-.637L7.19 8.61zm2.5 10a1.5 1.5 0 1 0-3 0 1.5 1.5 0 0 0 3 0m7 0a1.5 1.5 0 1 0-3 0 1.5 1.5 0 0 0 3 0"/>
+									</svg>
+									Services
+								</a>
+							</th>
+							<td>
+								<a href="/admin/salon/service/add/" class="addlink" aria-describedby="salon-service">Ajouter</a>
+							</td>
+						</tr>
+
+						<tr class="model-service">
+							<th scope="row" id="salon-service">
+								<a href="/admin/salon/service/">
+									<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart" viewBox="0 0 16 16">
+										<path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M3.102 4l1.313 7h8.17l1.313-7zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2"/>
+									</svg>
+									POS
+								</a>
+							</th>
+							<td>
+								<a href="/admin/salon/service/add/" class="addlink" aria-describedby="salon-service">Ajouter</a>
+							</td>
+						</tr>
+
+					</table>
+				</div>
+			</nav>
+
+
+
+			<main id="content-start" class="content" tabindex="-1">
+
+				<nav aria-label="Fil d'Ariane">
+		
+					<div class="breadcrumbs">
+						<a href="{% url 'dashboard' %}">Accueil</a>
+						&rsaquo; Appointments
+					</div>
+		
+				</nav>
+
+
+
+				<!-- Content -->
+				<div id="content" class="">
+
+					<h1>Sélectionnez l’objet appointment à changer</h1>
+
+
+					<div id="content-main">
+
+						<ul class="object-tools">
+
+
+
+
+
+							<li>
+
+								<a href="/admin/salon/appointment/add/?_changelist_filters=o%3D-3.4" class="addlink">
+									Ajouter appointment
+								</a>
+							</li>
+
+
+
+
+						</ul>
+
+
+						<div class="module filtered" id="changelist">
+							<div class="changelist-form-container">
+
+
+								<div id="toolbar">
+									<form id="changelist-search" method="get" role="search">
+										<div><!-- DIV needed for valid HTML -->
+											<label for="searchbar"><img src="/static/admin/img/search.svg"
+													alt="Search"></label>
+											<input type="text" size="40" name="q" value="" id="searchbar">
+											<input type="submit" value="Recherche">
+
+
+											<input type="hidden" name="o" value="-3.4">
+
+										</div>
+
+									</form>
+								</div>
+
+
+
+								<nav class="toplinks">
+
+
+
+
+
+
+									<a href="?date__year=2024&amp;o=-3.4">2024</a>
+
+									<a href="?date__year=2025&amp;o=-3.4">2025</a>
+
+
+
+								</nav>
+
+
+
+								<form id="changelist-form" method="post" novalidate><input type="hidden"
+										name="csrfmiddlewaretoken"
+										value="meQWkMTOcZNcK3R4v89upOEq7m0qhcBP5sHFYmbmnEH1RA8uNfAsCoCOIsbArqeN">
+
+
+
+
+									<div class="actions">
+
+
+										<label>Action : <select name="action" required>
+												<option value="" selected>---------</option>
+
+												<option value="delete_selected">Supprimer les appointments sélectionnés
+												</option>
+
+											</select></label><input type="hidden" name="select_across" value="0"
+											class="select-across">
+
+
+										<button type="submit" class="button" title="Exécuter l’action sélectionnée"
+											name="index" value="0">Envoyer</button>
+
+
+
+										<span class="action-counter" data-actions-icnt="100">0 sur 100
+											sélectionné</span>
+
+										<span class="all hidden">Tous les 150 sélectionnés</span>
+										<span class="question hidden">
+											<a href="#"
+												title="Cliquez ici pour sélectionner tous les objets sur l’ensemble des pages">Sélectionner
+												tous
+												les 150 appointments</a>
+										</span>
+										<span class="clear hidden"><a href="#">Effacer la sélection</a></span>
+
+
+
+
+									</div>
+
+
+
+
+									<div class="results">
+										<table id="result_list">
+											<thead>
+												<tr>
+
+													<th scope="col" class="action-checkbox-column">
+
+														<div class="text"><span><input type="checkbox"
+																	id="action-toggle"
+																	aria-label="Sélectionner tous les objets de cette page en vue d’une action"></span>
+														</div>
+														<div class="clear"></div>
+													</th>
+													<th scope="col" class="sortable column-client">
+
+														<div class="text"><a href="?o=1.-3.4">Client</a></div>
+														<div class="clear"></div>
+													</th>
+													<th scope="col" class="sortable column-service">
+
+														<div class="text"><a href="?o=2.-3.4">Service</a></div>
+														<div class="clear"></div>
+													</th>
+													<th scope="col" class="sortable column-date sorted descending">
+
+														<div class="sortoptions">
+															<a class="sortremove" href="?o=4"
+																title="Enlever du tri"></a>
+															<span class="sortpriority"
+																title="Priorité de tri : 1">1</span>
+															<a href="?o=3.4" class="toggle descending"
+																title="Inverser le tri"></a>
+														</div>
+
+														<div class="text"><a href="?o=3.4">Date</a></div>
+														<div class="clear"></div>
+													</th>
+													<th scope="col" class="sortable column-heure sorted ascending">
+
+														<div class="sortoptions">
+															<a class="sortremove" href="?o=-3"
+																title="Enlever du tri"></a>
+															<span class="sortpriority"
+																title="Priorité de tri : 2">2</span>
+															<a href="?o=-3.-4" class="toggle ascending"
+																title="Inverser le tri"></a>
+														</div>
+
+														<div class="text"><a href="?o=-4.-3">Heure</a></div>
+														<div class="clear"></div>
+													</th>
+													<th scope="col" class="sortable column-statut">
+
+														<div class="text"><a href="?o=5.-3.4">Statut</a></div>
+														<div class="clear"></div>
+													</th>
+												</tr>
+											</thead>
+											<tbody>
+
+
+												<tr>
+													<td class="action-checkbox"><input type="checkbox"
+															name="_selected_action" value="30" class="action-select"
+															aria-label="Choisir cet objet pour une action - Rendez-vous pour Client 12 - Service 10">
+													</td>
+													<th class="field-client nowrap"><a
+															href="/admin/salon/appointment/30/change/?_changelist_filters=o%3D-3.4">Client
+															12</a></th>
+													<td class="field-service nowrap">Service 10</td>
+													<td class="field-date nowrap">24 février 2025</td>
+													<td class="field-heure nowrap">17:15</td>
+													<td class="field-statut">Pending</td>
+												</tr>
+
+
+												<tr>
+													<td class="action-checkbox"><input type="checkbox"
+															name="_selected_action" value="5" class="action-select"
+															aria-label="Choisir cet objet pour une action - Rendez-vous pour Client 18 - Service 8">
+													</td>
+													<th class="field-client nowrap"><a
+															href="/admin/salon/appointment/5/change/?_changelist_filters=o%3D-3.4">Client
+															18</a></th>
+													<td class="field-service nowrap">Service 8</td>
+													<td class="field-date nowrap">23 février 2025</td>
+													<td class="field-heure nowrap">12:40</td>
+													<td class="field-statut">Pending</td>
+												</tr>
+
+
+												<tr>
+													<td class="action-checkbox"><input type="checkbox"
+															name="_selected_action" value="145" class="action-select"
+															aria-label="Choisir cet objet pour une action - Rendez-vous pour Client 15 - Service 7">
+													</td>
+													<th class="field-client nowrap"><a
+															href="/admin/salon/appointment/145/change/?_changelist_filters=o%3D-3.4">Client
+															15</a>
+													</th>
+													<td class="field-service nowrap">Service 7</td>
+													<td class="field-date nowrap">23 février 2025</td>
+													<td class="field-heure nowrap">15:05</td>
+													<td class="field-statut">Pending</td>
+												</tr>
+
+
+												<tr>
+													<td class="action-checkbox"><input type="checkbox"
+															name="_selected_action" value="121" class="action-select"
+															aria-label="Choisir cet objet pour une action - Rendez-vous pour Client 14 - Service 6">
+													</td>
+													<th class="field-client nowrap"><a
+															href="/admin/salon/appointment/121/change/?_changelist_filters=o%3D-3.4">Client
+															14</a>
+													</th>
+													<td class="field-service nowrap">Service 6</td>
+													<td class="field-date nowrap">23 février 2025</td>
+													<td class="field-heure nowrap">15:49</td>
+													<td class="field-statut">Pending</td>
+												</tr>
+
+
+												<tr>
+													<td class="action-checkbox"><input type="checkbox"
+															name="_selected_action" value="22" class="action-select"
+															aria-label="Choisir cet objet pour une action - Rendez-vous pour Client 11 - Service 8">
+													</td>
+													<th class="field-client nowrap"><a
+															href="/admin/salon/appointment/22/change/?_changelist_filters=o%3D-3.4">Client
+															11</a></th>
+													<td class="field-service nowrap">Service 8</td>
+													<td class="field-date nowrap">22 février 2025</td>
+													<td class="field-heure nowrap">11:14</td>
+													<td class="field-statut">Pending</td>
+												</tr>
+
+
+												<tr>
+													<td class="action-checkbox"><input type="checkbox"
+															name="_selected_action" value="113" class="action-select"
+															aria-label="Choisir cet objet pour une action - Rendez-vous pour Client 5 - Service 2">
+													</td>
+													<th class="field-client nowrap"><a
+															href="/admin/salon/appointment/113/change/?_changelist_filters=o%3D-3.4">Client
+															5</a></th>
+													<td class="field-service nowrap">Service 2</td>
+													<td class="field-date nowrap">22 février 2025</td>
+													<td class="field-heure nowrap">12:53</td>
+													<td class="field-statut">Pending</td>
+												</tr>
+
+
+												<tr>
+													<td class="action-checkbox"><input type="checkbox"
+															name="_selected_action" value="50" class="action-select"
+															aria-label="Choisir cet objet pour une action - Rendez-vous pour Client 8 - Service 3">
+													</td>
+													<th class="field-client nowrap"><a
+															href="/admin/salon/appointment/50/change/?_changelist_filters=o%3D-3.4">Client
+															8</a></th>
+													<td class="field-service nowrap">Service 3</td>
+													<td class="field-date nowrap">22 février 2025</td>
+													<td class="field-heure nowrap">16:32</td>
+													<td class="field-statut">Pending</td>
+												</tr>
+
+
+												<tr>
+													<td class="action-checkbox"><input type="checkbox"
+															name="_selected_action" value="94" class="action-select"
+															aria-label="Choisir cet objet pour une action - Rendez-vous pour Client 4 - Service 9">
+													</td>
+													<th class="field-client nowrap"><a
+															href="/admin/salon/appointment/94/change/?_changelist_filters=o%3D-3.4">Client
+															4</a></th>
+													<td class="field-service nowrap">Service 9</td>
+													<td class="field-date nowrap">21 février 2025</td>
+													<td class="field-heure nowrap">10:22</td>
+													<td class="field-statut">Pending</td>
+												</tr>
+
+
+												<tr>
+													<td class="action-checkbox"><input type="checkbox"
+															name="_selected_action" value="52" class="action-select"
+															aria-label="Choisir cet objet pour une action - Rendez-vous pour Client 16 - Service 2">
+													</td>
+													<th class="field-client nowrap"><a
+															href="/admin/salon/appointment/52/change/?_changelist_filters=o%3D-3.4">Client
+															16</a></th>
+													<td class="field-service nowrap">Service 2</td>
+													<td class="field-date nowrap">21 février 2025</td>
+													<td class="field-heure nowrap">11:08</td>
+													<td class="field-statut">Pending</td>
+												</tr>
+
+
+												<tr>
+													<td class="action-checkbox"><input type="checkbox"
+															name="_selected_action" value="47" class="action-select"
+															aria-label="Choisir cet objet pour une action - Rendez-vous pour Client 2 - Service 9">
+													</td>
+													<th class="field-client nowrap"><a
+															href="/admin/salon/appointment/47/change/?_changelist_filters=o%3D-3.4">Client
+															2</a></th>
+													<td class="field-service nowrap">Service 9</td>
+													<td class="field-date nowrap">21 février 2025</td>
+													<td class="field-heure nowrap">14:38</td>
+													<td class="field-statut">Pending</td>
+												</tr>
+
+
+												<tr>
+													<td class="action-checkbox"><input type="checkbox"
+															name="_selected_action" value="104" class="action-select"
+															aria-label="Choisir cet objet pour une action - Rendez-vous pour Client 1 - Service 4">
+													</td>
+													<th class="field-client nowrap"><a
+															href="/admin/salon/appointment/104/change/?_changelist_filters=o%3D-3.4">Client
+															1</a></th>
+													<td class="field-service nowrap">Service 4</td>
+													<td class="field-date nowrap">20 février 2025</td>
+													<td class="field-heure nowrap">09:42</td>
+													<td class="field-statut">Pending</td>
+												</tr>
+
+
+												<tr>
+													<td class="action-checkbox"><input type="checkbox"
+															name="_selected_action" value="102" class="action-select"
+															aria-label="Choisir cet objet pour une action - Rendez-vous pour Client 11 - Service 7">
+													</td>
+													<th class="field-client nowrap"><a
+															href="/admin/salon/appointment/102/change/?_changelist_filters=o%3D-3.4">Client
+															11</a>
+													</th>
+													<td class="field-service nowrap">Service 7</td>
+													<td class="field-date nowrap">20 février 2025</td>
+													<td class="field-heure nowrap">18:35</td>
+													<td class="field-statut">Pending</td>
+												</tr>
+
+
+												<tr>
+													<td class="action-checkbox"><input type="checkbox"
+															name="_selected_action" value="65" class="action-select"
+															aria-label="Choisir cet objet pour une action - Rendez-vous pour Client 7 - Service 3">
+													</td>
+													<th class="field-client nowrap"><a
+															href="/admin/salon/appointment/65/change/?_changelist_filters=o%3D-3.4">Client
+															7</a></th>
+													<td class="field-service nowrap">Service 3</td>
+													<td class="field-date nowrap">19 février 2025</td>
+													<td class="field-heure nowrap">17:55</td>
+													<td class="field-statut">Pending</td>
+												</tr>
+
+
+												<tr>
+													<td class="action-checkbox"><input type="checkbox"
+															name="_selected_action" value="61" class="action-select"
+															aria-label="Choisir cet objet pour une action - Rendez-vous pour Client 5 - Service 8">
+													</td>
+													<th class="field-client nowrap"><a
+															href="/admin/salon/appointment/61/change/?_changelist_filters=o%3D-3.4">Client
+															5</a></th>
+													<td class="field-service nowrap">Service 8</td>
+													<td class="field-date nowrap">18 février 2025</td>
+													<td class="field-heure nowrap">09:21</td>
+													<td class="field-statut">Pending</td>
+												</tr>
+
+
+												<tr>
+													<td class="action-checkbox"><input type="checkbox"
+															name="_selected_action" value="62" class="action-select"
+															aria-label="Choisir cet objet pour une action - Rendez-vous pour Client 2 - Service 3">
+													</td>
+													<th class="field-client nowrap"><a
+															href="/admin/salon/appointment/62/change/?_changelist_filters=o%3D-3.4">Client
+															2</a></th>
+													<td class="field-service nowrap">Service 3</td>
+													<td class="field-date nowrap">18 février 2025</td>
+													<td class="field-heure nowrap">13:36</td>
+													<td class="field-statut">Pending</td>
+												</tr>
+
+
+												<tr>
+													<td class="action-checkbox"><input type="checkbox"
+															name="_selected_action" value="143" class="action-select"
+															aria-label="Choisir cet objet pour une action - Rendez-vous pour Client 17 - Service 3">
+													</td>
+													<th class="field-client nowrap"><a
+															href="/admin/salon/appointment/143/change/?_changelist_filters=o%3D-3.4">Client
+															17</a>
+													</th>
+													<td class="field-service nowrap">Service 3</td>
+													<td class="field-date nowrap">17 février 2025</td>
+													<td class="field-heure nowrap">12:02</td>
+													<td class="field-statut">Pending</td>
+												</tr>
+
+
+												<tr>
+													<td class="action-checkbox"><input type="checkbox"
+															name="_selected_action" value="44" class="action-select"
+															aria-label="Choisir cet objet pour une action - Rendez-vous pour Client 20 - Service 10">
+													</td>
+													<th class="field-client nowrap"><a
+															href="/admin/salon/appointment/44/change/?_changelist_filters=o%3D-3.4">Client
+															20</a></th>
+													<td class="field-service nowrap">Service 10</td>
+													<td class="field-date nowrap">16 février 2025</td>
+													<td class="field-heure nowrap">14:28</td>
+													<td class="field-statut">Pending</td>
+												</tr>
+
+
+												<tr>
+													<td class="action-checkbox"><input type="checkbox"
+															name="_selected_action" value="25" class="action-select"
+															aria-label="Choisir cet objet pour une action - Rendez-vous pour Client 9 - Service 7">
+													</td>
+													<th class="field-client nowrap"><a
+															href="/admin/salon/appointment/25/change/?_changelist_filters=o%3D-3.4">Client
+															9</a></th>
+													<td class="field-service nowrap">Service 7</td>
+													<td class="field-date nowrap">16 février 2025</td>
+													<td class="field-heure nowrap">17:41</td>
+													<td class="field-statut">Pending</td>
+												</tr>
+
+
+												<tr>
+													<td class="action-checkbox"><input type="checkbox"
+															name="_selected_action" value="150" class="action-select"
+															aria-label="Choisir cet objet pour une action - Rendez-vous pour Client 14 - Service 8">
+													</td>
+													<th class="field-client nowrap"><a
+															href="/admin/salon/appointment/150/change/?_changelist_filters=o%3D-3.4">Client
+															14</a>
+													</th>
+													<td class="field-service nowrap">Service 8</td>
+													<td class="field-date nowrap">15 février 2025</td>
+													<td class="field-heure nowrap">16:47</td>
+													<td class="field-statut">Pending</td>
+												</tr>
+
+
+												<tr>
+													<td class="action-checkbox"><input type="checkbox"
+															name="_selected_action" value="77" class="action-select"
+															aria-label="Choisir cet objet pour une action - Rendez-vous pour Client 7 - Service 2">
+													</td>
+													<th class="field-client nowrap"><a
+															href="/admin/salon/appointment/77/change/?_changelist_filters=o%3D-3.4">Client
+															7</a></th>
+													<td class="field-service nowrap">Service 2</td>
+													<td class="field-date nowrap">15 février 2025</td>
+													<td class="field-heure nowrap">18:14</td>
+													<td class="field-statut">Pending</td>
+												</tr>
+
+
+												<tr>
+													<td class="action-checkbox"><input type="checkbox"
+															name="_selected_action" value="26" class="action-select"
+															aria-label="Choisir cet objet pour une action - Rendez-vous pour Client 17 - Service 3">
+													</td>
+													<th class="field-client nowrap"><a
+															href="/admin/salon/appointment/26/change/?_changelist_filters=o%3D-3.4">Client
+															17</a></th>
+													<td class="field-service nowrap">Service 3</td>
+													<td class="field-date nowrap">14 février 2025</td>
+													<td class="field-heure nowrap">14:13</td>
+													<td class="field-statut">Pending</td>
+												</tr>
+
+
+												<tr>
+													<td class="action-checkbox"><input type="checkbox"
+															name="_selected_action" value="141" class="action-select"
+															aria-label="Choisir cet objet pour une action - Rendez-vous pour Client 11 - Service 4">
+													</td>
+													<th class="field-client nowrap"><a
+															href="/admin/salon/appointment/141/change/?_changelist_filters=o%3D-3.4">Client
+															11</a>
+													</th>
+													<td class="field-service nowrap">Service 4</td>
+													<td class="field-date nowrap">13 février 2025</td>
+													<td class="field-heure nowrap">11:23</td>
+													<td class="field-statut">Pending</td>
+												</tr>
+
+
+												<tr>
+													<td class="action-checkbox"><input type="checkbox"
+															name="_selected_action" value="125" class="action-select"
+															aria-label="Choisir cet objet pour une action - Rendez-vous pour Client 1 - Service 2">
+													</td>
+													<th class="field-client nowrap"><a
+															href="/admin/salon/appointment/125/change/?_changelist_filters=o%3D-3.4">Client
+															1</a></th>
+													<td class="field-service nowrap">Service 2</td>
+													<td class="field-date nowrap">13 février 2025</td>
+													<td class="field-heure nowrap">14:18</td>
+													<td class="field-statut">Pending</td>
+												</tr>
+
+
+												<tr>
+													<td class="action-checkbox"><input type="checkbox"
+															name="_selected_action" value="78" class="action-select"
+															aria-label="Choisir cet objet pour une action - Rendez-vous pour Client 3 - Service 9">
+													</td>
+													<th class="field-client nowrap"><a
+															href="/admin/salon/appointment/78/change/?_changelist_filters=o%3D-3.4">Client
+															3</a></th>
+													<td class="field-service nowrap">Service 9</td>
+													<td class="field-date nowrap">13 février 2025</td>
+													<td class="field-heure nowrap">17:17</td>
+													<td class="field-statut">Pending</td>
+												</tr>
+
+
+												<tr>
+													<td class="action-checkbox"><input type="checkbox"
+															name="_selected_action" value="89" class="action-select"
+															aria-label="Choisir cet objet pour une action - Rendez-vous pour Client 4 - Service 4">
+													</td>
+													<th class="field-client nowrap"><a
+															href="/admin/salon/appointment/89/change/?_changelist_filters=o%3D-3.4">Client
+															4</a></th>
+													<td class="field-service nowrap">Service 4</td>
+													<td class="field-date nowrap">13 février 2025</td>
+													<td class="field-heure nowrap">18:28</td>
+													<td class="field-statut">Pending</td>
+												</tr>
+
+
+												<tr>
+													<td class="action-checkbox"><input type="checkbox"
+															name="_selected_action" value="98" class="action-select"
+															aria-label="Choisir cet objet pour une action - Rendez-vous pour Client 15 - Service 7">
+													</td>
+													<th class="field-client nowrap"><a
+															href="/admin/salon/appointment/98/change/?_changelist_filters=o%3D-3.4">Client
+															15</a></th>
+													<td class="field-service nowrap">Service 7</td>
+													<td class="field-date nowrap">13 février 2025</td>
+													<td class="field-heure nowrap">18:45</td>
+													<td class="field-statut">Pending</td>
+												</tr>
+
+
+												<tr>
+													<td class="action-checkbox"><input type="checkbox"
+															name="_selected_action" value="138" class="action-select"
+															aria-label="Choisir cet objet pour une action - Rendez-vous pour Client 9 - Service 4">
+													</td>
+													<th class="field-client nowrap"><a
+															href="/admin/salon/appointment/138/change/?_changelist_filters=o%3D-3.4">Client
+															9</a></th>
+													<td class="field-service nowrap">Service 4</td>
+													<td class="field-date nowrap">12 février 2025</td>
+													<td class="field-heure nowrap">11:41</td>
+													<td class="field-statut">Pending</td>
+												</tr>
+
+
+												<tr>
+													<td class="action-checkbox"><input type="checkbox"
+															name="_selected_action" value="32" class="action-select"
+															aria-label="Choisir cet objet pour une action - Rendez-vous pour Client 19 - Service 3">
+													</td>
+													<th class="field-client nowrap"><a
+															href="/admin/salon/appointment/32/change/?_changelist_filters=o%3D-3.4">Client
+															19</a></th>
+													<td class="field-service nowrap">Service 3</td>
+													<td class="field-date nowrap">12 février 2025</td>
+													<td class="field-heure nowrap">11:57</td>
+													<td class="field-statut">Pending</td>
+												</tr>
+
+
+												<tr>
+													<td class="action-checkbox"><input type="checkbox"
+															name="_selected_action" value="122" class="action-select"
+															aria-label="Choisir cet objet pour une action - Rendez-vous pour Client 18 - Service 6">
+													</td>
+													<th class="field-client nowrap"><a
+															href="/admin/salon/appointment/122/change/?_changelist_filters=o%3D-3.4">Client
+															18</a>
+													</th>
+													<td class="field-service nowrap">Service 6</td>
+													<td class="field-date nowrap">12 février 2025</td>
+													<td class="field-heure nowrap">14:39</td>
+													<td class="field-statut">Pending</td>
+												</tr>
+
+
+												<tr>
+													<td class="action-checkbox"><input type="checkbox"
+															name="_selected_action" value="6" class="action-select"
+															aria-label="Choisir cet objet pour une action - Rendez-vous pour Client 11 - Service 7">
+													</td>
+													<th class="field-client nowrap"><a
+															href="/admin/salon/appointment/6/change/?_changelist_filters=o%3D-3.4">Client
+															11</a></th>
+													<td class="field-service nowrap">Service 7</td>
+													<td class="field-date nowrap">11 février 2025</td>
+													<td class="field-heure nowrap">10:22</td>
+													<td class="field-statut">Pending</td>
+												</tr>
+
+
+												<tr>
+													<td class="action-checkbox"><input type="checkbox"
+															name="_selected_action" value="41" class="action-select"
+															aria-label="Choisir cet objet pour une action - Rendez-vous pour Client 20 - Service 7">
+													</td>
+													<th class="field-client nowrap"><a
+															href="/admin/salon/appointment/41/change/?_changelist_filters=o%3D-3.4">Client
+															20</a></th>
+													<td class="field-service nowrap">Service 7</td>
+													<td class="field-date nowrap">11 février 2025</td>
+													<td class="field-heure nowrap">14:55</td>
+													<td class="field-statut">Pending</td>
+												</tr>
+
+
+												<tr>
+													<td class="action-checkbox"><input type="checkbox"
+															name="_selected_action" value="1" class="action-select"
+															aria-label="Choisir cet objet pour une action - Rendez-vous pour Client 9 - Service 3">
+													</td>
+													<th class="field-client nowrap"><a
+															href="/admin/salon/appointment/1/change/?_changelist_filters=o%3D-3.4">Client
+															9</a></th>
+													<td class="field-service nowrap">Service 3</td>
+													<td class="field-date nowrap">11 février 2025</td>
+													<td class="field-heure nowrap">15:41</td>
+													<td class="field-statut">Pending</td>
+												</tr>
+
+
+												<tr>
+													<td class="action-checkbox"><input type="checkbox"
+															name="_selected_action" value="73" class="action-select"
+															aria-label="Choisir cet objet pour une action - Rendez-vous pour Client 15 - Service 6">
+													</td>
+													<th class="field-client nowrap"><a
+															href="/admin/salon/appointment/73/change/?_changelist_filters=o%3D-3.4">Client
+															15</a></th>
+													<td class="field-service nowrap">Service 6</td>
+													<td class="field-date nowrap">11 février 2025</td>
+													<td class="field-heure nowrap">15:47</td>
+													<td class="field-statut">Pending</td>
+												</tr>
+
+
+												<tr>
+													<td class="action-checkbox"><input type="checkbox"
+															name="_selected_action" value="45" class="action-select"
+															aria-label="Choisir cet objet pour une action - Rendez-vous pour Client 9 - Service 10">
+													</td>
+													<th class="field-client nowrap"><a
+															href="/admin/salon/appointment/45/change/?_changelist_filters=o%3D-3.4">Client
+															9</a></th>
+													<td class="field-service nowrap">Service 10</td>
+													<td class="field-date nowrap">10 février 2025</td>
+													<td class="field-heure nowrap">12:29</td>
+													<td class="field-statut">Pending</td>
+												</tr>
+
+
+												<tr>
+													<td class="action-checkbox"><input type="checkbox"
+															name="_selected_action" value="13" class="action-select"
+															aria-label="Choisir cet objet pour une action - Rendez-vous pour Client 6 - Service 4">
+													</td>
+													<th class="field-client nowrap"><a
+															href="/admin/salon/appointment/13/change/?_changelist_filters=o%3D-3.4">Client
+															6</a></th>
+													<td class="field-service nowrap">Service 4</td>
+													<td class="field-date nowrap">9 février 2025</td>
+													<td class="field-heure nowrap">09:48</td>
+													<td class="field-statut">Pending</td>
+												</tr>
+
+
+												<tr>
+													<td class="action-checkbox"><input type="checkbox"
+															name="_selected_action" value="72" class="action-select"
+															aria-label="Choisir cet objet pour une action - Rendez-vous pour Client 8 - Service 1">
+													</td>
+													<th class="field-client nowrap"><a
+															href="/admin/salon/appointment/72/change/?_changelist_filters=o%3D-3.4">Client
+															8</a></th>
+													<td class="field-service nowrap">Service 1</td>
+													<td class="field-date nowrap">9 février 2025</td>
+													<td class="field-heure nowrap">13:33</td>
+													<td class="field-statut">Pending</td>
+												</tr>
+
+
+												<tr>
+													<td class="action-checkbox"><input type="checkbox"
+															name="_selected_action" value="69" class="action-select"
+															aria-label="Choisir cet objet pour une action - Rendez-vous pour Client 13 - Service 4">
+													</td>
+													<th class="field-client nowrap"><a
+															href="/admin/salon/appointment/69/change/?_changelist_filters=o%3D-3.4">Client
+															13</a></th>
+													<td class="field-service nowrap">Service 4</td>
+													<td class="field-date nowrap">9 février 2025</td>
+													<td class="field-heure nowrap">16:35</td>
+													<td class="field-statut">Pending</td>
+												</tr>
+
+
+												<tr>
+													<td class="action-checkbox"><input type="checkbox"
+															name="_selected_action" value="46" class="action-select"
+															aria-label="Choisir cet objet pour une action - Rendez-vous pour Client 1 - Service 4">
+													</td>
+													<th class="field-client nowrap"><a
+															href="/admin/salon/appointment/46/change/?_changelist_filters=o%3D-3.4">Client
+															1</a></th>
+													<td class="field-service nowrap">Service 4</td>
+													<td class="field-date nowrap">9 février 2025</td>
+													<td class="field-heure nowrap">18:43</td>
+													<td class="field-statut">Pending</td>
+												</tr>
+
+
+												<tr>
+													<td class="action-checkbox"><input type="checkbox"
+															name="_selected_action" value="140" class="action-select"
+															aria-label="Choisir cet objet pour une action - Rendez-vous pour Client 3 - Service 9">
+													</td>
+													<th class="field-client nowrap"><a
+															href="/admin/salon/appointment/140/change/?_changelist_filters=o%3D-3.4">Client
+															3</a></th>
+													<td class="field-service nowrap">Service 9</td>
+													<td class="field-date nowrap">8 février 2025</td>
+													<td class="field-heure nowrap">10:21</td>
+													<td class="field-statut">Pending</td>
+												</tr>
+
+
+												<tr>
+													<td class="action-checkbox"><input type="checkbox"
+															name="_selected_action" value="51" class="action-select"
+															aria-label="Choisir cet objet pour une action - Rendez-vous pour Client 14 - Service 1">
+													</td>
+													<th class="field-client nowrap"><a
+															href="/admin/salon/appointment/51/change/?_changelist_filters=o%3D-3.4">Client
+															14</a></th>
+													<td class="field-service nowrap">Service 1</td>
+													<td class="field-date nowrap">8 février 2025</td>
+													<td class="field-heure nowrap">13:17</td>
+													<td class="field-statut">Pending</td>
+												</tr>
+
+
+												<tr>
+													<td class="action-checkbox"><input type="checkbox"
+															name="_selected_action" value="117" class="action-select"
+															aria-label="Choisir cet objet pour une action - Rendez-vous pour Client 8 - Service 2">
+													</td>
+													<th class="field-client nowrap"><a
+															href="/admin/salon/appointment/117/change/?_changelist_filters=o%3D-3.4">Client
+															8</a></th>
+													<td class="field-service nowrap">Service 2</td>
+													<td class="field-date nowrap">7 février 2025</td>
+													<td class="field-heure nowrap">09:03</td>
+													<td class="field-statut">Pending</td>
+												</tr>
+
+
+												<tr>
+													<td class="action-checkbox"><input type="checkbox"
+															name="_selected_action" value="97" class="action-select"
+															aria-label="Choisir cet objet pour une action - Rendez-vous pour Client 4 - Service 10">
+													</td>
+													<th class="field-client nowrap"><a
+															href="/admin/salon/appointment/97/change/?_changelist_filters=o%3D-3.4">Client
+															4</a></th>
+													<td class="field-service nowrap">Service 10</td>
+													<td class="field-date nowrap">7 février 2025</td>
+													<td class="field-heure nowrap">11:51</td>
+													<td class="field-statut">Pending</td>
+												</tr>
+
+
+												<tr>
+													<td class="action-checkbox"><input type="checkbox"
+															name="_selected_action" value="126" class="action-select"
+															aria-label="Choisir cet objet pour une action - Rendez-vous pour Client 7 - Service 3">
+													</td>
+													<th class="field-client nowrap"><a
+															href="/admin/salon/appointment/126/change/?_changelist_filters=o%3D-3.4">Client
+															7</a></th>
+													<td class="field-service nowrap">Service 3</td>
+													<td class="field-date nowrap">6 février 2025</td>
+													<td class="field-heure nowrap">09:39</td>
+													<td class="field-statut">Pending</td>
+												</tr>
+
+
+												<tr>
+													<td class="action-checkbox"><input type="checkbox"
+															name="_selected_action" value="119" class="action-select"
+															aria-label="Choisir cet objet pour une action - Rendez-vous pour Client 10 - Service 6">
+													</td>
+													<th class="field-client nowrap"><a
+															href="/admin/salon/appointment/119/change/?_changelist_filters=o%3D-3.4">Client
+															10</a>
+													</th>
+													<td class="field-service nowrap">Service 6</td>
+													<td class="field-date nowrap">6 février 2025</td>
+													<td class="field-heure nowrap">10:31</td>
+													<td class="field-statut">Pending</td>
+												</tr>
+
+
+												<tr>
+													<td class="action-checkbox"><input type="checkbox"
+															name="_selected_action" value="21" class="action-select"
+															aria-label="Choisir cet objet pour une action - Rendez-vous pour Client 16 - Service 5">
+													</td>
+													<th class="field-client nowrap"><a
+															href="/admin/salon/appointment/21/change/?_changelist_filters=o%3D-3.4">Client
+															16</a></th>
+													<td class="field-service nowrap">Service 5</td>
+													<td class="field-date nowrap">5 février 2025</td>
+													<td class="field-heure nowrap">09:57</td>
+													<td class="field-statut">Pending</td>
+												</tr>
+
+
+												<tr>
+													<td class="action-checkbox"><input type="checkbox"
+															name="_selected_action" value="136" class="action-select"
+															aria-label="Choisir cet objet pour une action - Rendez-vous pour Client 16 - Service 7">
+													</td>
+													<th class="field-client nowrap"><a
+															href="/admin/salon/appointment/136/change/?_changelist_filters=o%3D-3.4">Client
+															16</a>
+													</th>
+													<td class="field-service nowrap">Service 7</td>
+													<td class="field-date nowrap">5 février 2025</td>
+													<td class="field-heure nowrap">10:15</td>
+													<td class="field-statut">Pending</td>
+												</tr>
+
+
+												<tr>
+													<td class="action-checkbox"><input type="checkbox"
+															name="_selected_action" value="38" class="action-select"
+															aria-label="Choisir cet objet pour une action - Rendez-vous pour Client 19 - Service 4">
+													</td>
+													<th class="field-client nowrap"><a
+															href="/admin/salon/appointment/38/change/?_changelist_filters=o%3D-3.4">Client
+															19</a></th>
+													<td class="field-service nowrap">Service 4</td>
+													<td class="field-date nowrap">5 février 2025</td>
+													<td class="field-heure nowrap">12:33</td>
+													<td class="field-statut">Pending</td>
+												</tr>
+
+
+												<tr>
+													<td class="action-checkbox"><input type="checkbox"
+															name="_selected_action" value="96" class="action-select"
+															aria-label="Choisir cet objet pour une action - Rendez-vous pour Client 15 - Service 2">
+													</td>
+													<th class="field-client nowrap"><a
+															href="/admin/salon/appointment/96/change/?_changelist_filters=o%3D-3.4">Client
+															15</a></th>
+													<td class="field-service nowrap">Service 2</td>
+													<td class="field-date nowrap">5 février 2025</td>
+													<td class="field-heure nowrap">13:56</td>
+													<td class="field-statut">Pending</td>
+												</tr>
+
+
+												<tr>
+													<td class="action-checkbox"><input type="checkbox"
+															name="_selected_action" value="10" class="action-select"
+															aria-label="Choisir cet objet pour une action - Rendez-vous pour Client 1 - Service 5">
+													</td>
+													<th class="field-client nowrap"><a
+															href="/admin/salon/appointment/10/change/?_changelist_filters=o%3D-3.4">Client
+															1</a></th>
+													<td class="field-service nowrap">Service 5</td>
+													<td class="field-date nowrap">5 février 2025</td>
+													<td class="field-heure nowrap">18:22</td>
+													<td class="field-statut">Pending</td>
+												</tr>
+
+
+												<tr>
+													<td class="action-checkbox"><input type="checkbox"
+															name="_selected_action" value="112" class="action-select"
+															aria-label="Choisir cet objet pour une action - Rendez-vous pour Client 14 - Service 1">
+													</td>
+													<th class="field-client nowrap"><a
+															href="/admin/salon/appointment/112/change/?_changelist_filters=o%3D-3.4">Client
+															14</a>
+													</th>
+													<td class="field-service nowrap">Service 1</td>
+													<td class="field-date nowrap">4 février 2025</td>
+													<td class="field-heure nowrap">10:28</td>
+													<td class="field-statut">Pending</td>
+												</tr>
+
+
+												<tr>
+													<td class="action-checkbox"><input type="checkbox"
+															name="_selected_action" value="66" class="action-select"
+															aria-label="Choisir cet objet pour une action - Rendez-vous pour Client 5 - Service 7">
+													</td>
+													<th class="field-client nowrap"><a
+															href="/admin/salon/appointment/66/change/?_changelist_filters=o%3D-3.4">Client
+															5</a></th>
+													<td class="field-service nowrap">Service 7</td>
+													<td class="field-date nowrap">4 février 2025</td>
+													<td class="field-heure nowrap">14:49</td>
+													<td class="field-statut">Pending</td>
+												</tr>
+
+
+												<tr>
+													<td class="action-checkbox"><input type="checkbox"
+															name="_selected_action" value="35" class="action-select"
+															aria-label="Choisir cet objet pour une action - Rendez-vous pour Client 12 - Service 5">
+													</td>
+													<th class="field-client nowrap"><a
+															href="/admin/salon/appointment/35/change/?_changelist_filters=o%3D-3.4">Client
+															12</a></th>
+													<td class="field-service nowrap">Service 5</td>
+													<td class="field-date nowrap">4 février 2025</td>
+													<td class="field-heure nowrap">15:08</td>
+													<td class="field-statut">Pending</td>
+												</tr>
+
+
+												<tr>
+													<td class="action-checkbox"><input type="checkbox"
+															name="_selected_action" value="144" class="action-select"
+															aria-label="Choisir cet objet pour une action - Rendez-vous pour Client 17 - Service 8">
+													</td>
+													<th class="field-client nowrap"><a
+															href="/admin/salon/appointment/144/change/?_changelist_filters=o%3D-3.4">Client
+															17</a>
+													</th>
+													<td class="field-service nowrap">Service 8</td>
+													<td class="field-date nowrap">3 février 2025</td>
+													<td class="field-heure nowrap">10:30</td>
+													<td class="field-statut">Pending</td>
+												</tr>
+
+
+												<tr>
+													<td class="action-checkbox"><input type="checkbox"
+															name="_selected_action" value="43" class="action-select"
+															aria-label="Choisir cet objet pour une action - Rendez-vous pour Client 11 - Service 6">
+													</td>
+													<th class="field-client nowrap"><a
+															href="/admin/salon/appointment/43/change/?_changelist_filters=o%3D-3.4">Client
+															11</a></th>
+													<td class="field-service nowrap">Service 6</td>
+													<td class="field-date nowrap">2 février 2025</td>
+													<td class="field-heure nowrap">11:04</td>
+													<td class="field-statut">Pending</td>
+												</tr>
+
+
+												<tr>
+													<td class="action-checkbox"><input type="checkbox"
+															name="_selected_action" value="87" class="action-select"
+															aria-label="Choisir cet objet pour une action - Rendez-vous pour Client 6 - Service 9">
+													</td>
+													<th class="field-client nowrap"><a
+															href="/admin/salon/appointment/87/change/?_changelist_filters=o%3D-3.4">Client
+															6</a></th>
+													<td class="field-service nowrap">Service 9</td>
+													<td class="field-date nowrap">2 février 2025</td>
+													<td class="field-heure nowrap">11:36</td>
+													<td class="field-statut">Pending</td>
+												</tr>
+
+
+												<tr>
+													<td class="action-checkbox"><input type="checkbox"
+															name="_selected_action" value="118" class="action-select"
+															aria-label="Choisir cet objet pour une action - Rendez-vous pour Client 17 - Service 6">
+													</td>
+													<th class="field-client nowrap"><a
+															href="/admin/salon/appointment/118/change/?_changelist_filters=o%3D-3.4">Client
+															17</a>
+													</th>
+													<td class="field-service nowrap">Service 6</td>
+													<td class="field-date nowrap">1 février 2025</td>
+													<td class="field-heure nowrap">14:45</td>
+													<td class="field-statut">Pending</td>
+												</tr>
+
+
+												<tr>
+													<td class="action-checkbox"><input type="checkbox"
+															name="_selected_action" value="109" class="action-select"
+															aria-label="Choisir cet objet pour une action - Rendez-vous pour Client 6 - Service 10">
+													</td>
+													<th class="field-client nowrap"><a
+															href="/admin/salon/appointment/109/change/?_changelist_filters=o%3D-3.4">Client
+															6</a></th>
+													<td class="field-service nowrap">Service 10</td>
+													<td class="field-date nowrap">31 janvier 2025</td>
+													<td class="field-heure nowrap">12:13</td>
+													<td class="field-statut">Pending</td>
+												</tr>
+
+
+												<tr>
+													<td class="action-checkbox"><input type="checkbox"
+															name="_selected_action" value="137" class="action-select"
+															aria-label="Choisir cet objet pour une action - Rendez-vous pour Client 6 - Service 6">
+													</td>
+													<th class="field-client nowrap"><a
+															href="/admin/salon/appointment/137/change/?_changelist_filters=o%3D-3.4">Client
+															6</a></th>
+													<td class="field-service nowrap">Service 6</td>
+													<td class="field-date nowrap">31 janvier 2025</td>
+													<td class="field-heure nowrap">15:23</td>
+													<td class="field-statut">Pending</td>
+												</tr>
+
+
+												<tr>
+													<td class="action-checkbox"><input type="checkbox"
+															name="_selected_action" value="79" class="action-select"
+															aria-label="Choisir cet objet pour une action - Rendez-vous pour Client 19 - Service 2">
+													</td>
+													<th class="field-client nowrap"><a
+															href="/admin/salon/appointment/79/change/?_changelist_filters=o%3D-3.4">Client
+															19</a></th>
+													<td class="field-service nowrap">Service 2</td>
+													<td class="field-date nowrap">31 janvier 2025</td>
+													<td class="field-heure nowrap">18:17</td>
+													<td class="field-statut">Pending</td>
+												</tr>
+
+
+												<tr>
+													<td class="action-checkbox"><input type="checkbox"
+															name="_selected_action" value="93" class="action-select"
+															aria-label="Choisir cet objet pour une action - Rendez-vous pour Client 11 - Service 1">
+													</td>
+													<th class="field-client nowrap"><a
+															href="/admin/salon/appointment/93/change/?_changelist_filters=o%3D-3.4">Client
+															11</a></th>
+													<td class="field-service nowrap">Service 1</td>
+													<td class="field-date nowrap">30 janvier 2025</td>
+													<td class="field-heure nowrap">13:59</td>
+													<td class="field-statut">Pending</td>
+												</tr>
+
+
+												<tr>
+													<td class="action-checkbox"><input type="checkbox"
+															name="_selected_action" value="71" class="action-select"
+															aria-label="Choisir cet objet pour une action - Rendez-vous pour Client 12 - Service 7">
+													</td>
+													<th class="field-client nowrap"><a
+															href="/admin/salon/appointment/71/change/?_changelist_filters=o%3D-3.4">Client
+															12</a></th>
+													<td class="field-service nowrap">Service 7</td>
+													<td class="field-date nowrap">30 janvier 2025</td>
+													<td class="field-heure nowrap">16:00</td>
+													<td class="field-statut">Pending</td>
+												</tr>
+
+
+												<tr>
+													<td class="action-checkbox"><input type="checkbox"
+															name="_selected_action" value="135" class="action-select"
+															aria-label="Choisir cet objet pour une action - Rendez-vous pour Client 3 - Service 2">
+													</td>
+													<th class="field-client nowrap"><a
+															href="/admin/salon/appointment/135/change/?_changelist_filters=o%3D-3.4">Client
+															3</a></th>
+													<td class="field-service nowrap">Service 2</td>
+													<td class="field-date nowrap">30 janvier 2025</td>
+													<td class="field-heure nowrap">17:46</td>
+													<td class="field-statut">Pending</td>
+												</tr>
+
+
+												<tr>
+													<td class="action-checkbox"><input type="checkbox"
+															name="_selected_action" value="148" class="action-select"
+															aria-label="Choisir cet objet pour une action - Rendez-vous pour Client 2 - Service 8">
+													</td>
+													<th class="field-client nowrap"><a
+															href="/admin/salon/appointment/148/change/?_changelist_filters=o%3D-3.4">Client
+															2</a></th>
+													<td class="field-service nowrap">Service 8</td>
+													<td class="field-date nowrap">29 janvier 2025</td>
+													<td class="field-heure nowrap">09:59</td>
+													<td class="field-statut">Pending</td>
+												</tr>
+
+
+												<tr>
+													<td class="action-checkbox"><input type="checkbox"
+															name="_selected_action" value="80" class="action-select"
+															aria-label="Choisir cet objet pour une action - Rendez-vous pour Client 14 - Service 7">
+													</td>
+													<th class="field-client nowrap"><a
+															href="/admin/salon/appointment/80/change/?_changelist_filters=o%3D-3.4">Client
+															14</a></th>
+													<td class="field-service nowrap">Service 7</td>
+													<td class="field-date nowrap">29 janvier 2025</td>
+													<td class="field-heure nowrap">10:56</td>
+													<td class="field-statut">Pending</td>
+												</tr>
+
+
+												<tr>
+													<td class="action-checkbox"><input type="checkbox"
+															name="_selected_action" value="101" class="action-select"
+															aria-label="Choisir cet objet pour une action - Rendez-vous pour Client 13 - Service 4">
+													</td>
+													<th class="field-client nowrap"><a
+															href="/admin/salon/appointment/101/change/?_changelist_filters=o%3D-3.4">Client
+															13</a>
+													</th>
+													<td class="field-service nowrap">Service 4</td>
+													<td class="field-date nowrap">29 janvier 2025</td>
+													<td class="field-heure nowrap">17:09</td>
+													<td class="field-statut">Pending</td>
+												</tr>
+
+
+												<tr>
+													<td class="action-checkbox"><input type="checkbox"
+															name="_selected_action" value="152" class="action-select"
+															aria-label="Choisir cet objet pour une action - Rendez-vous pour Client 2 - Service 6">
+													</td>
+													<th class="field-client nowrap"><a
+															href="/admin/salon/appointment/152/change/?_changelist_filters=o%3D-3.4">Client
+															2</a></th>
+													<td class="field-service nowrap">Service 6</td>
+													<td class="field-date nowrap">28 janvier 2025</td>
+													<td class="field-heure nowrap">00:35</td>
+													<td class="field-statut">Pending</td>
+												</tr>
+
+
+												<tr>
+													<td class="action-checkbox"><input type="checkbox"
+															name="_selected_action" value="153" class="action-select"
+															aria-label="Choisir cet objet pour une action - Rendez-vous pour Client 1 - Service 1">
+													</td>
+													<th class="field-client nowrap"><a
+															href="/admin/salon/appointment/153/change/?_changelist_filters=o%3D-3.4">Client
+															1</a></th>
+													<td class="field-service nowrap">Service 1</td>
+													<td class="field-date nowrap">27 janvier 2025</td>
+													<td class="field-heure nowrap">00:45</td>
+													<td class="field-statut">Pending</td>
+												</tr>
+
+
+												<tr>
+													<td class="action-checkbox"><input type="checkbox"
+															name="_selected_action" value="151" class="action-select"
+															aria-label="Choisir cet objet pour une action - Rendez-vous pour Client 1 - Service 1">
+													</td>
+													<th class="field-client nowrap"><a
+															href="/admin/salon/appointment/151/change/?_changelist_filters=o%3D-3.4">Client
+															1</a></th>
+													<td class="field-service nowrap">Service 1</td>
+													<td class="field-date nowrap">27 janvier 2025</td>
+													<td class="field-heure nowrap">05:31</td>
+													<td class="field-statut">Pending</td>
+												</tr>
+
+
+												<tr>
+													<td class="action-checkbox"><input type="checkbox"
+															name="_selected_action" value="130" class="action-select"
+															aria-label="Choisir cet objet pour une action - Rendez-vous pour Client 2 - Service 1">
+													</td>
+													<th class="field-client nowrap"><a
+															href="/admin/salon/appointment/130/change/?_changelist_filters=o%3D-3.4">Client
+															2</a></th>
+													<td class="field-service nowrap">Service 1</td>
+													<td class="field-date nowrap">27 janvier 2025</td>
+													<td class="field-heure nowrap">12:57</td>
+													<td class="field-statut">Pending</td>
+												</tr>
+
+
+												<tr>
+													<td class="action-checkbox"><input type="checkbox"
+															name="_selected_action" value="59" class="action-select"
+															aria-label="Choisir cet objet pour une action - Rendez-vous pour Client 1 - Service 7">
+													</td>
+													<th class="field-client nowrap"><a
+															href="/admin/salon/appointment/59/change/?_changelist_filters=o%3D-3.4">Client
+															1</a></th>
+													<td class="field-service nowrap">Service 7</td>
+													<td class="field-date nowrap">27 janvier 2025</td>
+													<td class="field-heure nowrap">14:48</td>
+													<td class="field-statut">Pending</td>
+												</tr>
+
+
+												<tr>
+													<td class="action-checkbox"><input type="checkbox"
+															name="_selected_action" value="107" class="action-select"
+															aria-label="Choisir cet objet pour une action - Rendez-vous pour Client 4 - Service 2">
+													</td>
+													<th class="field-client nowrap"><a
+															href="/admin/salon/appointment/107/change/?_changelist_filters=o%3D-3.4">Client
+															4</a></th>
+													<td class="field-service nowrap">Service 2</td>
+													<td class="field-date nowrap">27 janvier 2025</td>
+													<td class="field-heure nowrap">15:54</td>
+													<td class="field-statut">Pending</td>
+												</tr>
+
+
+												<tr>
+													<td class="action-checkbox"><input type="checkbox"
+															name="_selected_action" value="100" class="action-select"
+															aria-label="Choisir cet objet pour une action - Rendez-vous pour Client 18 - Service 1">
+													</td>
+													<th class="field-client nowrap"><a
+															href="/admin/salon/appointment/100/change/?_changelist_filters=o%3D-3.4">Client
+															18</a>
+													</th>
+													<td class="field-service nowrap">Service 1</td>
+													<td class="field-date nowrap">26 janvier 2025</td>
+													<td class="field-heure nowrap">10:21</td>
+													<td class="field-statut">Pending</td>
+												</tr>
+
+
+												<tr>
+													<td class="action-checkbox"><input type="checkbox"
+															name="_selected_action" value="99" class="action-select"
+															aria-label="Choisir cet objet pour une action - Rendez-vous pour Client 18 - Service 6">
+													</td>
+													<th class="field-client nowrap"><a
+															href="/admin/salon/appointment/99/change/?_changelist_filters=o%3D-3.4">Client
+															18</a></th>
+													<td class="field-service nowrap">Service 6</td>
+													<td class="field-date nowrap">26 janvier 2025</td>
+													<td class="field-heure nowrap">10:34</td>
+													<td class="field-statut">Pending</td>
+												</tr>
+
+
+												<tr>
+													<td class="action-checkbox"><input type="checkbox"
+															name="_selected_action" value="58" class="action-select"
+															aria-label="Choisir cet objet pour une action - Rendez-vous pour Client 8 - Service 5">
+													</td>
+													<th class="field-client nowrap"><a
+															href="/admin/salon/appointment/58/change/?_changelist_filters=o%3D-3.4">Client
+															8</a></th>
+													<td class="field-service nowrap">Service 5</td>
+													<td class="field-date nowrap">25 janvier 2025</td>
+													<td class="field-heure nowrap">16:41</td>
+													<td class="field-statut">Pending</td>
+												</tr>
+
+
+												<tr>
+													<td class="action-checkbox"><input type="checkbox"
+															name="_selected_action" value="123" class="action-select"
+															aria-label="Choisir cet objet pour une action - Rendez-vous pour Client 13 - Service 9">
+													</td>
+													<th class="field-client nowrap"><a
+															href="/admin/salon/appointment/123/change/?_changelist_filters=o%3D-3.4">Client
+															13</a>
+													</th>
+													<td class="field-service nowrap">Service 9</td>
+													<td class="field-date nowrap">25 janvier 2025</td>
+													<td class="field-heure nowrap">18:09</td>
+													<td class="field-statut">Pending</td>
+												</tr>
+
+
+												<tr>
+													<td class="action-checkbox"><input type="checkbox"
+															name="_selected_action" value="9" class="action-select"
+															aria-label="Choisir cet objet pour une action - Rendez-vous pour Client 4 - Service 5">
+													</td>
+													<th class="field-client nowrap"><a
+															href="/admin/salon/appointment/9/change/?_changelist_filters=o%3D-3.4">Client
+															4</a></th>
+													<td class="field-service nowrap">Service 5</td>
+													<td class="field-date nowrap">24 janvier 2025</td>
+													<td class="field-heure nowrap">11:15</td>
+													<td class="field-statut">Pending</td>
+												</tr>
+
+
+												<tr>
+													<td class="action-checkbox"><input type="checkbox"
+															name="_selected_action" value="115" class="action-select"
+															aria-label="Choisir cet objet pour une action - Rendez-vous pour Client 1 - Service 7">
+													</td>
+													<th class="field-client nowrap"><a
+															href="/admin/salon/appointment/115/change/?_changelist_filters=o%3D-3.4">Client
+															1</a></th>
+													<td class="field-service nowrap">Service 7</td>
+													<td class="field-date nowrap">23 janvier 2025</td>
+													<td class="field-heure nowrap">09:18</td>
+													<td class="field-statut">Pending</td>
+												</tr>
+
+
+												<tr>
+													<td class="action-checkbox"><input type="checkbox"
+															name="_selected_action" value="111" class="action-select"
+															aria-label="Choisir cet objet pour une action - Rendez-vous pour Client 5 - Service 9">
+													</td>
+													<th class="field-client nowrap"><a
+															href="/admin/salon/appointment/111/change/?_changelist_filters=o%3D-3.4">Client
+															5</a></th>
+													<td class="field-service nowrap">Service 9</td>
+													<td class="field-date nowrap">23 janvier 2025</td>
+													<td class="field-heure nowrap">09:30</td>
+													<td class="field-statut">Pending</td>
+												</tr>
+
+
+												<tr>
+													<td class="action-checkbox"><input type="checkbox"
+															name="_selected_action" value="4" class="action-select"
+															aria-label="Choisir cet objet pour une action - Rendez-vous pour Client 9 - Service 8">
+													</td>
+													<th class="field-client nowrap"><a
+															href="/admin/salon/appointment/4/change/?_changelist_filters=o%3D-3.4">Client
+															9</a></th>
+													<td class="field-service nowrap">Service 8</td>
+													<td class="field-date nowrap">23 janvier 2025</td>
+													<td class="field-heure nowrap">12:06</td>
+													<td class="field-statut">Pending</td>
+												</tr>
+
+
+												<tr>
+													<td class="action-checkbox"><input type="checkbox"
+															name="_selected_action" value="12" class="action-select"
+															aria-label="Choisir cet objet pour une action - Rendez-vous pour Client 18 - Service 5">
+													</td>
+													<th class="field-client nowrap"><a
+															href="/admin/salon/appointment/12/change/?_changelist_filters=o%3D-3.4">Client
+															18</a></th>
+													<td class="field-service nowrap">Service 5</td>
+													<td class="field-date nowrap">22 janvier 2025</td>
+													<td class="field-heure nowrap">12:12</td>
+													<td class="field-statut">Pending</td>
+												</tr>
+
+
+												<tr>
+													<td class="action-checkbox"><input type="checkbox"
+															name="_selected_action" value="63" class="action-select"
+															aria-label="Choisir cet objet pour une action - Rendez-vous pour Client 9 - Service 5">
+													</td>
+													<th class="field-client nowrap"><a
+															href="/admin/salon/appointment/63/change/?_changelist_filters=o%3D-3.4">Client
+															9</a></th>
+													<td class="field-service nowrap">Service 5</td>
+													<td class="field-date nowrap">22 janvier 2025</td>
+													<td class="field-heure nowrap">16:01</td>
+													<td class="field-statut">Pending</td>
+												</tr>
+
+
+												<tr>
+													<td class="action-checkbox"><input type="checkbox"
+															name="_selected_action" value="40" class="action-select"
+															aria-label="Choisir cet objet pour une action - Rendez-vous pour Client 12 - Service 8">
+													</td>
+													<th class="field-client nowrap"><a
+															href="/admin/salon/appointment/40/change/?_changelist_filters=o%3D-3.4">Client
+															12</a></th>
+													<td class="field-service nowrap">Service 8</td>
+													<td class="field-date nowrap">22 janvier 2025</td>
+													<td class="field-heure nowrap">17:53</td>
+													<td class="field-statut">Pending</td>
+												</tr>
+
+
+												<tr>
+													<td class="action-checkbox"><input type="checkbox"
+															name="_selected_action" value="75" class="action-select"
+															aria-label="Choisir cet objet pour une action - Rendez-vous pour Client 20 - Service 4">
+													</td>
+													<th class="field-client nowrap"><a
+															href="/admin/salon/appointment/75/change/?_changelist_filters=o%3D-3.4">Client
+															20</a></th>
+													<td class="field-service nowrap">Service 4</td>
+													<td class="field-date nowrap">20 janvier 2025</td>
+													<td class="field-heure nowrap">13:27</td>
+													<td class="field-statut">Pending</td>
+												</tr>
+
+
+												<tr>
+													<td class="action-checkbox"><input type="checkbox"
+															name="_selected_action" value="7" class="action-select"
+															aria-label="Choisir cet objet pour une action - Rendez-vous pour Client 11 - Service 7">
+													</td>
+													<th class="field-client nowrap"><a
+															href="/admin/salon/appointment/7/change/?_changelist_filters=o%3D-3.4">Client
+															11</a></th>
+													<td class="field-service nowrap">Service 7</td>
+													<td class="field-date nowrap">20 janvier 2025</td>
+													<td class="field-heure nowrap">13:34</td>
+													<td class="field-statut">Pending</td>
+												</tr>
+
+
+												<tr>
+													<td class="action-checkbox"><input type="checkbox"
+															name="_selected_action" value="88" class="action-select"
+															aria-label="Choisir cet objet pour une action - Rendez-vous pour Client 15 - Service 1">
+													</td>
+													<th class="field-client nowrap"><a
+															href="/admin/salon/appointment/88/change/?_changelist_filters=o%3D-3.4">Client
+															15</a></th>
+													<td class="field-service nowrap">Service 1</td>
+													<td class="field-date nowrap">20 janvier 2025</td>
+													<td class="field-heure nowrap">16:37</td>
+													<td class="field-statut">Pending</td>
+												</tr>
+
+
+												<tr>
+													<td class="action-checkbox"><input type="checkbox"
+															name="_selected_action" value="127" class="action-select"
+															aria-label="Choisir cet objet pour une action - Rendez-vous pour Client 17 - Service 6">
+													</td>
+													<th class="field-client nowrap"><a
+															href="/admin/salon/appointment/127/change/?_changelist_filters=o%3D-3.4">Client
+															17</a>
+													</th>
+													<td class="field-service nowrap">Service 6</td>
+													<td class="field-date nowrap">20 janvier 2025</td>
+													<td class="field-heure nowrap">17:53</td>
+													<td class="field-statut">Pending</td>
+												</tr>
+
+
+												<tr>
+													<td class="action-checkbox"><input type="checkbox"
+															name="_selected_action" value="106" class="action-select"
+															aria-label="Choisir cet objet pour une action - Rendez-vous pour Client 8 - Service 2">
+													</td>
+													<th class="field-client nowrap"><a
+															href="/admin/salon/appointment/106/change/?_changelist_filters=o%3D-3.4">Client
+															8</a></th>
+													<td class="field-service nowrap">Service 2</td>
+													<td class="field-date nowrap">19 janvier 2025</td>
+													<td class="field-heure nowrap">10:46</td>
+													<td class="field-statut">Pending</td>
+												</tr>
+
+
+												<tr>
+													<td class="action-checkbox"><input type="checkbox"
+															name="_selected_action" value="131" class="action-select"
+															aria-label="Choisir cet objet pour une action - Rendez-vous pour Client 12 - Service 7">
+													</td>
+													<th class="field-client nowrap"><a
+															href="/admin/salon/appointment/131/change/?_changelist_filters=o%3D-3.4">Client
+															12</a>
+													</th>
+													<td class="field-service nowrap">Service 7</td>
+													<td class="field-date nowrap">19 janvier 2025</td>
+													<td class="field-heure nowrap">13:05</td>
+													<td class="field-statut">Pending</td>
+												</tr>
+
+
+												<tr>
+													<td class="action-checkbox"><input type="checkbox"
+															name="_selected_action" value="17" class="action-select"
+															aria-label="Choisir cet objet pour une action - Rendez-vous pour Client 10 - Service 8">
+													</td>
+													<th class="field-client nowrap"><a
+															href="/admin/salon/appointment/17/change/?_changelist_filters=o%3D-3.4">Client
+															10</a></th>
+													<td class="field-service nowrap">Service 8</td>
+													<td class="field-date nowrap">19 janvier 2025</td>
+													<td class="field-heure nowrap">17:28</td>
+													<td class="field-statut">Pending</td>
+												</tr>
+
+
+												<tr>
+													<td class="action-checkbox"><input type="checkbox"
+															name="_selected_action" value="114" class="action-select"
+															aria-label="Choisir cet objet pour une action - Rendez-vous pour Client 12 - Service 5">
+													</td>
+													<th class="field-client nowrap"><a
+															href="/admin/salon/appointment/114/change/?_changelist_filters=o%3D-3.4">Client
+															12</a>
+													</th>
+													<td class="field-service nowrap">Service 5</td>
+													<td class="field-date nowrap">18 janvier 2025</td>
+													<td class="field-heure nowrap">13:44</td>
+													<td class="field-statut">Pending</td>
+												</tr>
+
+
+												<tr>
+													<td class="action-checkbox"><input type="checkbox"
+															name="_selected_action" value="120" class="action-select"
+															aria-label="Choisir cet objet pour une action - Rendez-vous pour Client 12 - Service 4">
+													</td>
+													<th class="field-client nowrap"><a
+															href="/admin/salon/appointment/120/change/?_changelist_filters=o%3D-3.4">Client
+															12</a>
+													</th>
+													<td class="field-service nowrap">Service 4</td>
+													<td class="field-date nowrap">17 janvier 2025</td>
+													<td class="field-heure nowrap">13:04</td>
+													<td class="field-statut">Pending</td>
+												</tr>
+
+
+												<tr>
+													<td class="action-checkbox"><input type="checkbox"
+															name="_selected_action" value="95" class="action-select"
+															aria-label="Choisir cet objet pour une action - Rendez-vous pour Client 2 - Service 3">
+													</td>
+													<th class="field-client nowrap"><a
+															href="/admin/salon/appointment/95/change/?_changelist_filters=o%3D-3.4">Client
+															2</a></th>
+													<td class="field-service nowrap">Service 3</td>
+													<td class="field-date nowrap">17 janvier 2025</td>
+													<td class="field-heure nowrap">13:34</td>
+													<td class="field-statut">Pending</td>
+												</tr>
+
+
+												<tr>
+													<td class="action-checkbox"><input type="checkbox"
+															name="_selected_action" value="3" class="action-select"
+															aria-label="Choisir cet objet pour une action - Rendez-vous pour Client 8 - Service 8">
+													</td>
+													<th class="field-client nowrap"><a
+															href="/admin/salon/appointment/3/change/?_changelist_filters=o%3D-3.4">Client
+															8</a></th>
+													<td class="field-service nowrap">Service 8</td>
+													<td class="field-date nowrap">17 janvier 2025</td>
+													<td class="field-heure nowrap">14:18</td>
+													<td class="field-statut">Pending</td>
+												</tr>
+
+
+												<tr>
+													<td class="action-checkbox"><input type="checkbox"
+															name="_selected_action" value="129" class="action-select"
+															aria-label="Choisir cet objet pour une action - Rendez-vous pour Client 17 - Service 1">
+													</td>
+													<th class="field-client nowrap"><a
+															href="/admin/salon/appointment/129/change/?_changelist_filters=o%3D-3.4">Client
+															17</a>
+													</th>
+													<td class="field-service nowrap">Service 1</td>
+													<td class="field-date nowrap">16 janvier 2025</td>
+													<td class="field-heure nowrap">10:08</td>
+													<td class="field-statut">Pending</td>
+												</tr>
+
+
+												<tr>
+													<td class="action-checkbox"><input type="checkbox"
+															name="_selected_action" value="105" class="action-select"
+															aria-label="Choisir cet objet pour une action - Rendez-vous pour Client 4 - Service 1">
+													</td>
+													<th class="field-client nowrap"><a
+															href="/admin/salon/appointment/105/change/?_changelist_filters=o%3D-3.4">Client
+															4</a></th>
+													<td class="field-service nowrap">Service 1</td>
+													<td class="field-date nowrap">16 janvier 2025</td>
+													<td class="field-heure nowrap">14:23</td>
+													<td class="field-statut">Pending</td>
+												</tr>
+
+
+												<tr>
+													<td class="action-checkbox"><input type="checkbox"
+															name="_selected_action" value="60" class="action-select"
+															aria-label="Choisir cet objet pour une action - Rendez-vous pour Client 18 - Service 9">
+													</td>
+													<th class="field-client nowrap"><a
+															href="/admin/salon/appointment/60/change/?_changelist_filters=o%3D-3.4">Client
+															18</a></th>
+													<td class="field-service nowrap">Service 9</td>
+													<td class="field-date nowrap">16 janvier 2025</td>
+													<td class="field-heure nowrap">15:09</td>
+													<td class="field-statut">Pending</td>
+												</tr>
+
+
+												<tr>
+													<td class="action-checkbox"><input type="checkbox"
+															name="_selected_action" value="108" class="action-select"
+															aria-label="Choisir cet objet pour une action - Rendez-vous pour Client 10 - Service 5">
+													</td>
+													<th class="field-client nowrap"><a
+															href="/admin/salon/appointment/108/change/?_changelist_filters=o%3D-3.4">Client
+															10</a>
+													</th>
+													<td class="field-service nowrap">Service 5</td>
+													<td class="field-date nowrap">16 janvier 2025</td>
+													<td class="field-heure nowrap">15:47</td>
+													<td class="field-statut">Pending</td>
+												</tr>
+
+
+												<tr>
+													<td class="action-checkbox"><input type="checkbox"
+															name="_selected_action" value="28" class="action-select"
+															aria-label="Choisir cet objet pour une action - Rendez-vous pour Client 6 - Service 10">
+													</td>
+													<th class="field-client nowrap"><a
+															href="/admin/salon/appointment/28/change/?_changelist_filters=o%3D-3.4">Client
+															6</a></th>
+													<td class="field-service nowrap">Service 10</td>
+													<td class="field-date nowrap">15 janvier 2025</td>
+													<td class="field-heure nowrap">10:26</td>
+													<td class="field-statut">Pending</td>
+												</tr>
+
+
+												<tr>
+													<td class="action-checkbox"><input type="checkbox"
+															name="_selected_action" value="8" class="action-select"
+															aria-label="Choisir cet objet pour une action - Rendez-vous pour Client 8 - Service 4">
+													</td>
+													<th class="field-client nowrap"><a
+															href="/admin/salon/appointment/8/change/?_changelist_filters=o%3D-3.4">Client
+															8</a></th>
+													<td class="field-service nowrap">Service 4</td>
+													<td class="field-date nowrap">14 janvier 2025</td>
+													<td class="field-heure nowrap">09:01</td>
+													<td class="field-statut">Pending</td>
+												</tr>
+
+
+												<tr>
+													<td class="action-checkbox"><input type="checkbox"
+															name="_selected_action" value="67" class="action-select"
+															aria-label="Choisir cet objet pour une action - Rendez-vous pour Client 8 - Service 5">
+													</td>
+													<th class="field-client nowrap"><a
+															href="/admin/salon/appointment/67/change/?_changelist_filters=o%3D-3.4">Client
+															8</a></th>
+													<td class="field-service nowrap">Service 5</td>
+													<td class="field-date nowrap">14 janvier 2025</td>
+													<td class="field-heure nowrap">12:05</td>
+													<td class="field-statut">Pending</td>
+												</tr>
+
+											</tbody>
+										</table>
+									</div>
+
+
+
+
+
+
+									<p class="paginator">
+
+
+										<span class="this-page">1</span>
+
+										<a href="?o=-3.4&amp;p=2" class="end">2</a>
+
+
+										150 appointments
+										<a href="?all=&amp;o=-3.4" class="showall">Tout afficher</a>
+
+									</p>
+
+								</form>
+							</div>
+
+
+							<nav id="changelist-filter" aria-labelledby="changelist-filter-header">
+								<h2 id="changelist-filter-header">Filtre</h2>
+								<div id="changelist-filter-extra-actions">
+									<h3>
+										<a href="?_facets=True&amp;o=-3.4" class="viewlink">Afficher les nombres</a>
+									</h3>
+
+								</div>
+
+								<details data-filter-title="date" open>
+									<summary>
+										Par date
+									</summary>
+									<ul>
+
+										<li class="selected">
+											<a href="?o=-3.4">Toutes les dates</a>
+										</li>
+
+										<li>
+											<a
+												href="?date__gte=2025-01-27&amp;date__lt=2025-01-28&amp;o=-3.4">Aujourd’hui</a>
+										</li>
+
+										<li>
+											<a href="?date__gte=2025-01-20&amp;date__lt=2025-01-28&amp;o=-3.4">Les 7
+												derniers jours</a>
+										</li>
+
+										<li>
+											<a href="?date__gte=2025-01-01&amp;date__lt=2025-02-01&amp;o=-3.4">Ce
+												mois-ci</a>
+										</li>
+
+										<li>
+											<a href="?date__gte=2025-01-01&amp;date__lt=2026-01-01&amp;o=-3.4">Cette
+												année</a>
+										</li>
+
+									</ul>
+								</details>
+
+								<details data-filter-title="statut" open>
+									<summary>
+										Par statut
+									</summary>
+									<ul>
+
+										<li class="selected">
+											<a href="?o=-3.4">Tout</a>
+										</li>
+
+										<li>
+											<a href="?o=-3.4&amp;statut__exact=pending">Pending</a>
+										</li>
+
+										<li>
+											<a href="?o=-3.4&amp;statut__exact=confirmed">Confirmed</a>
+										</li>
+
+										<li>
+											<a href="?o=-3.4&amp;statut__exact=cancelled">Cancelled</a>
+										</li>
+
+									</ul>
+								</details>
+
+							</nav>
+
+
+						</div>
+					</div>
+
+
+					<br class="clear">
+				</div>
+				<!-- END Content -->
+			</main>
+		</div>
+		<footer id="footer"></footer>
+	</div>
+	<!-- END Container -->
+
+	<!-- SVGs -->
+	<svg xmlns="http://www.w3.org/2000/svg" class="base-svgs">
+		<symbol viewBox="0 0 24 24" width="1rem" height="1rem" id="icon-auto">
+			<path d="M0 0h24v24H0z" fill="currentColor" />
+			<path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm0-2V4a8 8 0 1 0 0 16z" />
+		</symbol>
+		<symbol viewBox="0 0 24 24" width="1rem" height="1rem" id="icon-moon">
+			<path d="M0 0h24v24H0z" fill="currentColor" />
+			<path
+				d="M10 7a7 7 0 0 0 12 4.9v.1c0 5.523-4.477 10-10 10S2 17.523 2 12 6.477 2 12 2h.1A6.979 6.979 0 0 0 10 7zm-6 5a8 8 0 0 0 15.062 3.762A9 9 0 0 1 8.238 4.938 7.999 7.999 0 0 0 4 12z" />
+		</symbol>
+		<symbol viewBox="0 0 24 24" width="1rem" height="1rem" id="icon-sun">
+			<path d="M0 0h24v24H0z" fill="currentColor" />
+			<path
+				d="M12 18a6 6 0 1 1 0-12 6 6 0 0 1 0 12zm0-2a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM11 1h2v3h-2V1zm0 19h2v3h-2v-3zM3.515 4.929l1.414-1.414L7.05 5.636 5.636 7.05 3.515 4.93zM16.95 18.364l1.414-1.414 2.121 2.121-1.414 1.414-2.121-2.121zm2.121-14.85l1.414 1.415-2.121 2.121-1.414-1.414 2.121-2.121zM5.636 16.95l1.414 1.414-2.121 2.121-1.414-1.414 2.121-2.121zM23 11v2h-3v-2h3zM4 11v2H1v-2h3z" />
+		</symbol>
+	</svg>
+	<!-- END SVGs -->
+</body>
+
+</html>

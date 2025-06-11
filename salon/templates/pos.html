@@ -1,0 +1,166 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="fw-bold">Point of Sales</h2>
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <!-- Informations Vente -->
+        <div class="card p-3 mb-4">
+            <h4>Informations de la Vente</h4>
+            <div class="d-flex justify-content-between">
+                <div>
+                    {{ sale_form.client.label_tag }} {{ sale_form.client }}
+                </div>
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addClientModal">
+                    + Nouveau Client
+                </button>
+            </div>
+            <br>
+            {{ sale_form.moyen_paiement.label_tag }} {{ sale_form.moyen_paiement }}
+        </div>
+
+        <!-- Produits -->
+        <div class="card p-3 mb-4">
+            <h4>Produits</h4>
+            <div class="row">
+                {% for product in products %}
+                    <div class="col-md-3">
+                        <div class="card">
+                            {% if product.image %}
+                                <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.nom }}">
+                            {% else %}
+                                <img src="{% static 'default-product.png' %}" class="card-img-top" alt="{{ product.nom }}">
+                            {% endif %}
+                            <div class="card-body">
+                                <h5 class="card-title">{{ product.nom }}</h5>
+                                <p class="card-text"><strong>{{ product.prix }} €</strong></p>
+                                <p class="card-text">{{ product.stock_status }}</p>
+                                <input type="checkbox" name="selected_products" value="{{ product.id }}" data-price="{{ product.prix }}" class="calculate-total">
+                                <input type="number" name="quantities" min="1" max="{{ product.quantite }}" value="1" class="quantity-input d-none">
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Services -->
+        <div class="card p-3 mb-4">
+            <h4>Services</h4>
+            <div class="row gap-2">
+                {% for service in services %}
+                    <div class="col-md-3">
+                        <div class="card">
+                            {% if service.image %}
+                                <img src="{{ service.image.url }}" class="card-img-top" alt="{{ service.nom }}">
+                            {% else %}
+                                <img src="{% static 'default-service.png' %}" class="card-img-top" alt="{{ service.nom }}">
+                            {% endif %}
+                            <div class="card-body">
+                                <h5 class="card-title">{{ service.nom }}</h5>
+                                <p class="card-text">{{ service.description }}</p>
+                                <p class="card-text"><strong>{{ service.prix }} €</strong></p>
+                                <input type="checkbox" name="selected_services" value="{{ service.id }}" data-price="{{ service.prix }}" class="calculate-total">
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Total Calculé -->
+        <div class="alert alert-info">
+            <h4>Total: <span id="total-amount">0.00</span> €</h4>
+        </div>
+
+        <button type="submit" class="btn btn-success">Valider la Vente</button>
+    </form>
+</div>
+
+<!-- Modal pour ajouter un client -->
+<div class="modal fade" id="addClientModal" tabindex="-1" aria-labelledby="addClientModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addClientModalLabel">Ajouter un Client</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="post" id="addClientForm">
+                    {% csrf_token %}
+                    {{ client_form.as_p }}
+                    <button type="submit" class="btn btn-primary">Ajouter</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const checkboxes = document.querySelectorAll(".calculate-total");
+    const totalAmount = document.getElementById("total-amount");
+
+    function calculateTotal() {
+        let total = 0;
+        checkboxes.forEach(checkbox => {
+            if (checkbox.checked) {
+                const quantityInput = checkbox.closest('.card').querySelector('.quantity-input');
+                const quantity = parseInt(quantityInput.value) || 1;
+                const price = parseFloat(checkbox.getAttribute("data-price"));
+                total += price * quantity;
+            }
+        });
+        totalAmount.textContent = total.toFixed(2);
+    }
+
+    checkboxes.forEach(checkbox => {
+        checkbox.addEventListener("change", function() {
+            const quantityInput = checkbox.closest('.card').querySelector('.quantity-input');
+            if (checkbox.checked) {
+                quantityInput.classList.remove("d-none");
+            } else {
+                quantityInput.classList.add("d-none");
+            }
+            calculateTotal();
+        });
+    });
+
+    document.querySelectorAll('.quantity-input').forEach(input => {
+        input.addEventListener('input', calculateTotal);
+    });
+
+    document.getElementById("addClientForm").addEventListener("submit", function(event) {
+        event.preventDefault();
+        let form = this;
+        let formData = new FormData(form);
+
+        fetch("{% url 'add_client' %}", {
+            method: "POST",
+            body: formData,
+            headers: {
+                "X-Requested-With": "XMLHttpRequest",
+                "X-CSRFToken": "{{ csrf_token }}"
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                let clientSelect = document.querySelector("#id_client");
+                let option = new Option(data.client_name, data.client_id, true, true);
+                clientSelect.appendChild(option);
+                clientSelect.value = data.client_id;
+                document.querySelector(".btn-close").click();
+            }
+        });
+    });
+});
+</script>
+{% endblock %}
